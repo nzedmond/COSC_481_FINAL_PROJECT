@@ -120,8 +120,9 @@ class Player:
         # 2. Handle Input (Jump)
         if (IsKeyPressed(KEY_SPACE) or IsKeyPressed(KEY_UP)):
             if self.jump_count < self.max_jumps:
-                self.vy = JUMP_VELOCITY
                 self.jump_count += 1
+                self.vy = JUMP_VELOCITY
+                
                 # self.is_grounded = False
             else:
                 self.jump_count = 0
@@ -371,6 +372,9 @@ def draw_coins(coins):
         
         DrawLineV(v1, v3, BLACK)
         DrawLineV(v2, v4, BLACK)
+        
+def draw_game_end():
+    pass
 
 
 def update_camera(camera, player, world_width, world_height, screen_width, screen_height):
@@ -442,6 +446,9 @@ def main():
                     collectibles.pop(index)
                     score += 10
             
+            if len(collectibles) == 0:
+                game_state = "WIN"
+            
             # Check for enemy collision (Stomp/Death/Reset)
             hit_type, enemy_index = player.check_enemy_collision(enemies)
 
@@ -487,6 +494,12 @@ def main():
         debug_text = f"Grounded: {player.is_grounded} | Enemies: {len(enemies)}".encode('utf-8')
         DrawText(debug_text, 10, 10, 20, BLACK) 
 
+        if game_state == "WIN":
+            win_text = "You won!".encode('utf-8')
+            draw_text(win_text, SCREEN_WIDTH//2 - MeasureText(win_text, 40)//2, SCREEN_HEIGHT//2 - 20, 40, GREEN)
+            final_text = f"Final score: {score}".encode('utf-8')
+            draw_text(final_text, SCREEN_WIDTH//2 - MeasureText(final_text, 20)//2, SCREEN_HEIGHT//2 + 30, 20, BLACK)
+            
 
         EndDrawing()
 
