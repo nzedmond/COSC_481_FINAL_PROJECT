@@ -21,6 +21,9 @@ TILE_SOLID = 1
 TILE_COIN = 2 
 TILE_ENEMY = 3 
 
+# -----TEXTURES -------
+# coinname = 
+
 # --- Expanded Level Tilemap Definition (50x16 tiles = 2000px wide) ---
 LEVEL = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -54,8 +57,8 @@ def parse_level(level):
     Parses the level map, extracts all dynamic entities (coins, enemies), 
     replaces their spawn points with air, and returns the modified collision map and entity lists.
     """
-    coins = []
-    enemies = []
+    coins = [] # List to store coin positions (center of tile)
+    enemies = [] # List to store enemy objects
     # Create a deep copy of the level to modify the tiles, leaving the original map intact
     new_level = [row[:] for row in level] 
     
@@ -90,6 +93,9 @@ class Player:
         self.width = PLAYER_WIDTH
         self.height = PLAYER_HEIGHT
         
+        self.jump_count = 0
+        self.max_jumps = 2
+        
         # Physics
         self.vx = 0.0
         self.vy = 0.0
@@ -112,8 +118,15 @@ class Player:
             self.vy = 0.0
             
         # 2. Handle Input (Jump)
-        if (IsKeyPressed(KEY_SPACE) or IsKeyPressed(KEY_UP)) and self.is_grounded:
-            self.vy = JUMP_VELOCITY
+        if (IsKeyPressed(KEY_SPACE) or IsKeyPressed(KEY_UP)):
+            if self.jump_count < self.max_jumps:
+                self.vy = JUMP_VELOCITY
+                self.jump_count += 1
+                # self.is_grounded = False
+            else:
+                self.jump_count = 0
+            
+            draw_text(f"jump count: {self.jump_count}", 200, 280, 16, WHITE)
 
         # 3. Apply Gravity
         self.vy += GRAVITY * delta_time
@@ -122,6 +135,7 @@ class Player:
 
         # --- Reset grounded state at start of frame update ---
         self.is_grounded = False
+        # self.jump_count = 0
 
         # 4. Apply Movement (Separated for X and Y collision checks)
         
@@ -225,6 +239,7 @@ class Player:
         self.vx = 0.0
         self.vy = 0.0
         self.is_grounded = False
+        self.jump_count = 0
 
     def draw(self):
         """Draws the player at their world coordinates."""
@@ -344,7 +359,7 @@ def draw_level(level):
 def draw_coins(coins):
     """Draws the active coins as small yellow diamonds (polygons)."""
     radius = TILE_SIZE * 0.3 / 2 
-    
+
     for cx, cy in coins:
         v1 = Vector2(cx, cy - radius * 2)
         v2 = Vector2(cx + radius * 1.5, cy)
