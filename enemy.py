@@ -53,7 +53,7 @@ class Enemy:
                 if level[row][col] == TILE_SOLID:
                     tile_rect = (col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 
-                    if CheckCollisionRecs(enemy_rect, tile_rect):
+                    if check_collision_recs(enemy_rect, tile_rect):
 
                         if axis == 'X':
                             if self.vx > 0:
@@ -73,18 +73,18 @@ class Enemy:
 
     def draw(self):
         """Draws the enemy as a red rectangle with a directional indicator."""
-        DrawRectangle(int(self.x), int(self.y), int(self.width), int(self.height), RED)
-        DrawRectangleLines(int(self.x), int(self.y), int(self.width), int(self.height), BLACK)
+        draw_rectangle(int(self.x), int(self.y), int(self.width), int(self.height), RED)
+        draw_rectangle_lines(int(self.x), int(self.y), int(self.width), int(self.height), BLACK)
 
         center_x = self.x + self.width / 2
         center_y = self.y + self.height / 2
         indicator_size = self.width * 0.2
 
         if self.vx > 0:  # Moving Right
-            DrawTriangle(Vector2(center_x + indicator_size, center_y),
+            draw_triangle(Vector2(center_x + indicator_size, center_y),
                          Vector2(center_x - indicator_size, center_y - indicator_size),
                          Vector2(center_x - indicator_size, center_y + indicator_size), WHITE)
         elif self.vx < 0:  # Moving Left
-            DrawTriangle(Vector2(center_x - indicator_size, center_y),
+            draw_triangle(Vector2(center_x - indicator_size, center_y),
                          Vector2(center_x + indicator_size, center_y - indicator_size),
                          Vector2(center_x + indicator_size, center_y + indicator_size), WHITE)

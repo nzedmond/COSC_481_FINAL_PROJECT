@@ -10,8 +10,8 @@ def draw_level(level):
             if level[row][col] == TILE_SOLID:
                 x = col * TILE_SIZE
                 y = row * TILE_SIZE
-                DrawRectangle(x, y, TILE_SIZE, TILE_SIZE, DARKGRAY)
-                DrawRectangleLines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
+                draw_rectangle(x, y, TILE_SIZE, TILE_SIZE, DARKGRAY)
+                draw_rectangle_lines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
 
 
 def draw_coins(coins):
@@ -24,10 +24,10 @@ def draw_coins(coins):
         v3 = Vector2(cx, cy + radius * 2)
         v4 = Vector2(cx - radius * 1.5, cy)
 
-        DrawTriangle(v1, v2, v4, YELLOW)
-        DrawTriangle(v2, v3, v4, GOLD)
-        DrawLineV(v1, v3, BLACK)
-        DrawLineV(v2, v4, BLACK)
+        draw_triangle(v1, v2, v4, YELLOW)
+        draw_triangle(v2, v3, v4, GOLD)
+        draw_line_v(v1, v3, BLACK)
+        draw_line_v(v2, v4, BLACK)
 
 
 def update_camera(camera, player, world_width, world_height, screen_width, screen_height):

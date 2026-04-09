@@ -26,9 +26,9 @@ class Player:
     def update(self, delta_time, level):
         # 1. Handle Input (Horizontal Movement)
         self.vx = 0.0
-        if IsKeyDown(KEY_LEFT) or IsKeyDown(KEY_A):
+        if is_key_down(KEY_LEFT) or is_key_down(KEY_A):
             self.vx = -PLAYER_SPEED
-        if IsKeyDown(KEY_RIGHT) or IsKeyDown(KEY_D):
+        if is_key_down(KEY_RIGHT) or is_key_down(KEY_D):
             self.vx = PLAYER_SPEED
 
         # --- Velocity Zeroing for Stability ---
@@ -36,7 +36,7 @@ class Player:
             self.vy = 0.0
 
         # 2. Handle Input (Jump)
-        if IsKeyPressed(KEY_SPACE) or IsKeyPressed(KEY_UP):
+        if is_key_pressed(KEY_SPACE) or is_key_pressed(KEY_UP):
             if self.jump_count < self.max_jumps:
                 self.jump_count += 1
                 self.vy = JUMP_VELOCITY
@@ -84,7 +84,7 @@ class Player:
                 if level[row][col] == TILE_SOLID:
                     tile_rect = (col * TILE_SIZE, row * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 
-                    if CheckCollisionRecs(player_rect, tile_rect):
+                    if check_collision_recs(player_rect, tile_rect):
 
                         if axis == 'X':
                             if self.vx > 0:  # Moving Right
@@ -116,7 +116,7 @@ class Player:
             coin_y = cy - coin_collision_size / 2
             coin_rect = (coin_x, coin_y, coin_collision_size, coin_collision_size)
 
-            if CheckCollisionRecs(player_rect, coin_rect):
+            if check_collision_recs(player_rect, coin_rect):
                 collected_indices.append(i)
 
         return collected_indices
@@ -132,7 +132,7 @@ class Player:
         for i, enemy in enumerate(enemies):
             enemy_rect = enemy.get_rect()
 
-            if CheckCollisionRecs(player_rect, enemy_rect):
+            if check_collision_recs(player_rect, enemy_rect):
                 is_stompable_zone = py + ph < enemy.y + enemy.height * 0.5
 
                 if self.vy > 0 and is_stompable_zone:
@@ -153,8 +153,8 @@ class Player:
 
     def draw(self):
         """Draws the player at their world coordinates."""
-        DrawRectangle(int(self.x), int(self.y), int(self.width), int(self.height), BLUE)
+        draw_rectangle(int(self.x), int(self.y), int(self.width), int(self.height), BLUE)
         if self.is_grounded:
-            DrawRectangleLines(int(self.x), int(self.y), int(self.width), int(self.height), WHITE)
+            draw_rectangle_lines(int(self.x), int(self.y), int(self.width), int(self.height), WHITE)
         else:
-            DrawRectangleLines(int(self.x), int(self.y), int(self.width), int(self.height), GRAY)
+            draw_rectangle_lines(int(self.x), int(self.y), int(self.width), int(self.height), GRAY)
