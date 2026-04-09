@@ -12,6 +12,10 @@ def main():
 
     game_level, collectibles, enemies = parse_level(LEVEL)
 
+    coin_sheet = load_texture("coins/rotate.png".encode())
+    coin_frame = 0
+    anim_timer = 0.0
+
     player = Player(TILE_SIZE * 2, TILE_SIZE * 2)
     score = 0
     game_state = "PLAYING"
@@ -26,6 +30,11 @@ def main():
         delta_time = GetFrameTime()
 
         # --- Update ---
+        anim_timer += delta_time
+        if anim_timer >= 0.1:
+            anim_timer = 0.0
+            coin_frame = (coin_frame + 1) % 6
+
         if game_state == "PLAYING":
             player.update(delta_time, game_level)
 
@@ -62,7 +71,7 @@ def main():
 
         BeginMode2D(camera)
         draw_level(game_level)
-        draw_coins(collectibles)
+        draw_coins(collectibles, coin_sheet, coin_frame)
         for enemy in enemies:
             enemy.draw()
         player.draw()
@@ -82,6 +91,7 @@ def main():
 
         EndDrawing()
 
+    unload_texture(coin_sheet)
     CloseWindow()
 
 

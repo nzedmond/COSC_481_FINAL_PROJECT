@@ -14,20 +14,18 @@ def draw_level(level):
                 draw_rectangle_lines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
 
 
-def draw_coins(coins):
-    """Draws the active coins as small yellow diamonds."""
-    radius = TILE_SIZE * 0.3 / 2
+COIN_FRAME_COUNT = 6
 
+def draw_coins(coins, coin_sheet, coin_frame):
+    """Draws the active coins using the rotate spritesheet."""
+    frame_width = coin_sheet.width // COIN_FRAME_COUNT
+    frame_height = coin_sheet.height
+    size = TILE_SIZE * 0.9
+
+    source = Rectangle(coin_frame * frame_width, 0, frame_width, frame_height)
     for cx, cy in coins:
-        v1 = Vector2(cx, cy - radius * 2)
-        v2 = Vector2(cx + radius * 1.5, cy)
-        v3 = Vector2(cx, cy + radius * 2)
-        v4 = Vector2(cx - radius * 1.5, cy)
-
-        draw_triangle(v1, v2, v4, YELLOW)
-        draw_triangle(v2, v3, v4, GOLD)
-        draw_line_v(v1, v3, BLACK)
-        draw_line_v(v2, v4, BLACK)
+        dest = Rectangle(cx - size / 2, cy - size / 2, size, size)
+        draw_texture_pro(coin_sheet, source, dest, Vector2(0, 0), 0.0, WHITE)
 
 
 def update_camera(camera, player, world_width, world_height, screen_width, screen_height):

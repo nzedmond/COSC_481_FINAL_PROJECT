@@ -42,3 +42,18 @@ code structure: created constants.py, enemy.py, level.py, player.py, and rendere
 
 Next/To Do:
 * Change cross collect to use a coin texture using draw_texture_pro()
+
+
+### Date: 2026/04/09 10:00 AM
+**Goal**
+change cross collect to use a coin texture using draw_texture_pro()
+
+**Implementation**
+*Technical Plan/Credit*: Online resource
+*Content Credit*: `https://opengameart.org/content/coin-animation`
+
+**Commit message**
+Mechanic: replaced crosses with coin texture
+
+Next/To Do:
+* Implement screen manager using enum
