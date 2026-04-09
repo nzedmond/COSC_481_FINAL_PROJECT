@@ -18,11 +18,11 @@ COIN_FRAME_COUNT = 6
 
 def draw_coins(coins, coin_sheet, coin_frame):
     """Draws the active coins using the rotate spritesheet."""
-    frame_width = coin_sheet.width // COIN_FRAME_COUNT
+    frame_width = coin_sheet.width // COIN_FRAME_COUNT + 40
     frame_height = coin_sheet.height
     size = TILE_SIZE * 0.9
 
-    source = Rectangle(coin_frame * frame_width, 0, frame_width, frame_height)
+    source = Rectangle(coin_frame * frame_width, 0, frame_width-30, frame_height)
     for cx, cy in coins:
         dest = Rectangle(cx - size / 2, cy - size / 2, size, size)
         draw_texture_pro(coin_sheet, source, dest, Vector2(0, 0), 0.0, WHITE)
