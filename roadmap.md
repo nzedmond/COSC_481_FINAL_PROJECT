@@ -25,5 +25,20 @@ implementing winning condition
 UI/Mechanics: win after you've collected all the collectibles
 
 Next/To Do:
+* Organize the code into separate files
 * Change cross collect to use a coin texture using draw_texture_pro()
 
+
+### Date: 2026/04/09 7:00 AM
+**Goal**
+Restructuring the code into separate classes and files
+
+**Implementation**
+*Technical Plan/Credit*: reference midterm project code structure
+*Content Credit*: midterm project
+
+**Commit message**
+code structure: created constants.py, enemy.py, level.py, player.py, and renderer.py files.
+
+Next/To Do:
+* Change cross collect to use a coin texture using draw_texture_pro()
