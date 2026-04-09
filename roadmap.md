@@ -57,3 +57,18 @@ Mechanic: replaced crosses with coin texture
 
 Next/To Do:
 * Implement screen manager using enum
+
+
+### Date: 2026/04/09 10:40 AM
+**Goal**
+Implement screen manager using enum
+
+**Implementation**
+*Technical Plan/Credit*: Midterm base project
+*Content Credit*: Midterm project
+
+**Commit message**
+UI: implemented MENU, PAUSE, and GAME_OVER screens
+
+Next/To Do:
+* Implement a level generator that creates a random set of tiles and coin positions

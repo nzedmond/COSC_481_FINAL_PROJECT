@@ -4,6 +4,7 @@ from constants import *
 from level import parse_level, LEVEL, WORLD_WIDTH, WORLD_HEIGHT
 from player import Player
 from renderer import draw_level, draw_coins, update_camera
+from game_state import GameState
 
 
 def main():
@@ -18,7 +19,7 @@ def main():
 
     player = Player(TILE_SIZE * 2, TILE_SIZE * 2)
     score = 0
-    game_state = "PLAYING"
+    game_state = GameState.MENU
 
     camera = Camera2D()
     camera.target = Vector2(player.x, player.y)
@@ -35,7 +36,14 @@ def main():
             anim_timer = 0.0
             coin_frame = (coin_frame + 1) % 6
 
-        if game_state == "PLAYING":
+        if game_state == GameState.MENU:
+            if IsKeyPressed(KEY_ENTER):
+                game_state = GameState.PLAYING
+
+        elif game_state == GameState.PLAYING:
+            if IsKeyPressed(KEY_P):
+                game_state = GameState.PAUSED
+
             player.update(delta_time, game_level)
 
             for enemy in enemies:
@@ -50,7 +58,7 @@ def main():
                     score += 10
 
             if len(collectibles) == 0:
-                game_state = "WIN"
+                game_state = GameState.WIN
 
             hit_type, enemy_index = player.check_enemy_collision(enemies)
 
@@ -64,6 +72,10 @@ def main():
                 score -= 50
                 if score < 0:
                     score = 0
+
+        elif game_state == GameState.PAUSED:
+            if IsKeyPressed(KEY_P):
+                game_state = GameState.PLAYING
 
         # --- Draw ---
         BeginDrawing()
@@ -83,11 +95,21 @@ def main():
         debug_text = f"Grounded: {player.is_grounded} | Enemies: {len(enemies)}".encode('utf-8')
         DrawText(debug_text, 10, 10, 20, BLACK)
 
-        if game_state == "WIN":
+        if game_state == GameState.MENU:
+            menu_text = "Press ENTER to Play".encode('utf-8')
+            DrawText(menu_text, SCREEN_WIDTH // 2 - MeasureText(menu_text, 30) // 2, SCREEN_HEIGHT // 2 - 15, 30, WHITE)
+
+        elif game_state == GameState.PAUSED:
+            pause_text = "PAUSED".encode('utf-8')
+            DrawText(pause_text, SCREEN_WIDTH // 2 - MeasureText(pause_text, 40) // 2, SCREEN_HEIGHT // 2 - 20, 40, WHITE)
+            resume_text = "Press P to Resume".encode('utf-8')
+            DrawText(resume_text, SCREEN_WIDTH // 2 - MeasureText(resume_text, 20) // 2, SCREEN_HEIGHT // 2 + 30, 20, LIGHTGRAY)
+
+        elif game_state == GameState.WIN:
             win_text = "You won!".encode('utf-8')
-            draw_text(win_text, SCREEN_WIDTH // 2 - MeasureText(win_text, 40) // 2, SCREEN_HEIGHT // 2 - 20, 40, GREEN)
+            DrawText(win_text, SCREEN_WIDTH // 2 - MeasureText(win_text, 40) // 2, SCREEN_HEIGHT // 2 - 20, 40, GREEN)
             final_text = f"Final score: {score}".encode('utf-8')
-            draw_text(final_text, SCREEN_WIDTH // 2 - MeasureText(final_text, 20) // 2, SCREEN_HEIGHT // 2 + 30, 20, BLACK)
+            DrawText(final_text, SCREEN_WIDTH // 2 - MeasureText(final_text, 20) // 2, SCREEN_HEIGHT // 2 + 30, 20, BLACK)
 
         EndDrawing()
 
