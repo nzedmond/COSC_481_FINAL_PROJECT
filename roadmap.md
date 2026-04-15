@@ -59,16 +59,17 @@ Next/To Do:
 * Implement screen manager using enum
 
 
-### Date: 2026/04/09 10:40 AM
+### Date: 2026/04/15 1:25 PM
 **Goal**
-Implement screen manager using enum
+Design level one and define its mechanics
 
 **Implementation**
-*Technical Plan/Credit*: Midterm base project
-*Content Credit*: Midterm project
+*Technical Plan/Credit*: 
+*Content Credit*: 
 
 **Commit message**
-UI: implemented MENU, PAUSE, and GAME_OVER screens
+
 
 Next/To Do:
-* Implement a level generator that creates a random set of tiles and coin positions
+* 
+
