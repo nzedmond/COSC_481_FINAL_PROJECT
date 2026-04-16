@@ -83,6 +83,9 @@ The objective is not simply to reach the safe place, but to experience the emoti
   - **Run**
   - **Wall jump**
 
+<img src="../Assets/inside_church/Level_1.jpg" alt="level_1 sketch" width="400"/>
+
+<!-- ![level_1 sketch](../Assets/inside_church/Level_1.jpg) -->
 **Movement**
 - Single and double jump
 - Wall jump (for navigating the church's vertical interior)
