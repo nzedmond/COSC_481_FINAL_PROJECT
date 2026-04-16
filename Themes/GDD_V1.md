@@ -1,7 +1,22 @@
 # GAME DESIGN DOCUMENT
 
+## Table of Contents
+
+- [Disclaimer](#disclaimer)
+- [Working Title](#working-title)
+- [Game Summary](#game-summary)
+- [Inspiration](#inspiration)
+- [Gameplay Overview](#gameplay-overview)
+  - [Core Mechanics](#core-mechanics)
+  - [Level Structure](#level-structure)
+    - [Level 1: The Broken Sanctuary](#level-1-the-broken-sanctuary)
+    - [Level 2: The Escape](#level-2-the-escape)
+- [Theme Interpretation](#theme-interpretation)
+
+---
+
 **References:**
-[Uimana Odile's Testimony](https://www.kgm.rw/testimonies/odile-uwimana)
+[Uimana Odile's Testimony](http://genocide.lib.usf.edu/node/1400)
 
 ---
 
@@ -34,7 +49,9 @@ The objective is not simply to reach the safe place, but to experience the emoti
 - Historical role of the RDF in stopping the genocide and restoring hope in Rwandans.
 - Games:
   - **This War of Mine:** Read about it on Wikipedia and watched trailers on YouTube (civilian survival)
+  ![This War of Mine](../Assets/inspiration/this%20war%20of%20mine.jpg)
   - **Valiant Hearts: The Great War** (history and emotion)
+  ![Valiant Hearts: The Great War](../Assets/inspiration/valiant%20hearts.jpg)
 
 > "Survival stories carry both pain and hope, and must be remembered."
 
@@ -44,7 +61,7 @@ The objective is not simply to reach the safe place, but to experience the emoti
 
 ### Core Mechanics
 
-- 2D platformer with camera (different camera types in level 1 and 2)
+- 2D platformer with camera (different camera types in level 1 and 2): Level one is played inside the church, so the camera type is vertical, while for level 2, which is outside of the church, the camera type is horizontal.
 - Stealth (jump over blocks, avoid detection, move carefully)
 - Puzzles (choosing the fastest and safest path, timing your movements)
 - Narrative triggers (AV cues that tell the story)
@@ -52,16 +69,77 @@ The objective is not simply to reach the safe place, but to experience the emoti
 ### Level Structure
 
 #### Level 1: The Broken Sanctuary
+![inside the church](../Assets/cemetery/Background_1.png)
 
 - Inside the Kabgayi church
 - The goal is to exit the church
 - Sounds and visuals imply violence without explicitly showing it
 
-#### Level 2: The Escape
+##### Level 1 Mechanics
+- Player states:
+  - **Single and double jump**
+  - **Fall**
+  - **Hit**
+  - **Run**
+  - **Wall jump**
 
+**Movement**
+- Single and double jump
+- Wall jump (for navigating the church's vertical interior)
+- Run and fall states
+
+**Stealth**
+- Detection zones — militia/threat areas that trigger a "hit" state if entered
+- Crouching or slow movement to avoid detection
+- The Hit state implies a consequence system (damage, restart checkpoint)
+
+**Puzzles**
+- Vertical path choices — multiple routes up/through the church
+- Timed movements (e.g. wait for a patrol to pass before jumping)
+- Obstacles to jump over rather than engage
+
+**Narrative Triggers**
+- Audio cues (screams, gunshots off-screen) tied to position
+- Visual cues (smoke, broken pews, bodies implied not shown) as the player climbs
+- A trigger at the exit that transitions to Level 2
+
+#### Level 2: The Escape
+![En route to the safe zone](../Assets/cemetery/Social/moon.png)
 - Roads and countryside between Kabgayi and the safe zone
 - Cross dangerous open areas
 - The goal is to reach the safe zone
+- Enemies shoot at you and you've to stay alive
+
+##### Level 2 Mechanics
+- Player states:
+  - **Idle**
+  - **Walk**
+  - **Run**
+  - **Single jump**
+
+**Movement**
+- Walk, run, single jump (no wall jump — open terrain)
+- Idle state (hiding/pausing behind cover)
+
+**Enemy Mechanics**
+- Enemies that shoot projectiles toward the player
+- No combat — Odile cannot fight back, only evade
+- Cover system: objects to hide behind to avoid gunfire
+
+**Stealth / Survival**
+- Line-of-sight detection by enemies
+- Safe zones or shadows to pass through undetected
+
+**Narrative Triggers**
+- Environmental storytelling along the road (destroyed homes, abandoned items)
+- A final trigger reaching the RPF safe zone to end the game
+
+---
+
+## Cross-Level Design Notes
+
+- The Hit state (Level 1) and being shot (Level 2) should both feed into a single shared health/lives system
+- Narrative triggers in both levels should be positional and non-interruptive — they play out while the player can still move, keeping tension alive
 
 ---
 

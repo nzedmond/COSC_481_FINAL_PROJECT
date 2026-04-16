@@ -71,5 +71,19 @@ Design level one and define its mechanics
 
 
 Next/To Do:
-* 
+* improve the GDD_V1 file
 
+
+### Date: 2026/04/15 11:25 PM
+**Goal**
+improve the GDD_V1 file
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+Documentation: "Added level pictures and planned per-level game mechanics"
+
+Next/To Do:
+* Write the game base code (skeleton)/recycle the starter code to match my theme
