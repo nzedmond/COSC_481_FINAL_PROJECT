@@ -18,7 +18,40 @@ class Player:
         self.vx = 0.0
         self.vy = 0.0
         self.is_grounded = False
+        self.sprites = {
+            "idle": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Idle (32x32).png"),
+            "run":  load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Run (32x32).png"),
+            "jump": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Jump (32x32).png"),
+            "fall": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Fall (32x32).png"),
+        }
+        self.frame = 0
+        self.anim_timer = 0.0
+        self.facing_right = True
 
+    def get_current_sprite(self):
+        if not self.is_grounded:
+            return "jump" if self.vy < 0 else "fall"
+        elif self.vx != 0:
+            return "run"
+        return "idle"
+
+    def draw(self):
+        state = self.get_current_sprite()
+        tex = self.sprites[state]
+        frame_size = 32  # Each frame is 32x32 in the spritesheet
+        num_frames = tex.width // frame_size
+
+        self.anim_timer += get_frame_time()
+        if self.anim_timer >= 0.1:
+            self.anim_timer = 0.0
+            self.frame = (self.frame + 1) % num_frames
+
+        # Source rect — flip horizontally if facing left
+        fw = frame_size if self.facing_right else -frame_size
+        source = Rectangle(self.frame * frame_size, 0, fw, frame_size)
+        dest = Rectangle(self.x, self.y, self.width, self.height)
+        draw_texture_pro(tex, source, dest, Vector2(0, 0), 0.0, WHITE)
+        
     def get_rect(self):
         """Returns the player's collision bounding box (top-left, width, height)."""
         return (self.x, self.y, self.width, self.height)

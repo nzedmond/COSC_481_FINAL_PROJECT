@@ -23,3 +23,18 @@ TILE_AIR = 0
 TILE_SOLID = 1
 TILE_COIN = 2
 TILE_ENEMY = 3
+
+# ---- Terrain Spritesheet --------
+
+TERRAIN_TILE_SIZE = 16
+TERRAIN_TILES = {
+    "top_left": (0, 0),
+    "top": (1, 0),
+    "top_right": (2, 0),
+    "left": (0, 1),
+    "center": (1, 1),
+    "right": (2, 1),
+    "bottom_left": (0, 2),
+    "bottom": (1, 2),
+    "bottom_right": (2, 2),
+}

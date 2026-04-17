@@ -1,18 +1,74 @@
 from pyray import *
 from constants import *
 
-
-def draw_level(level):
-    """Draws the solid tiles of the level map."""
+def get_terrain_variant(level, row, col):
+    "Determine which terrain tile variant to use based on neighboring tiles"
     from level import TILE_ROWS, TILE_COLS
+    
+    def is_solid(r, c):
+        if r < 0 or r >= TILE_ROWS or c < 0 or c >= TILE_COLS:
+            return False
+        return level[r][c] == TILE_SOLID
+    
+    above = is_solid(row - 1, col)
+    below = is_solid(row + 1, col)
+    left = is_solid(row, col - 1)
+    right = is_solid(row, col + 1)
+    
+    if not above and not left:
+        return "top_left"
+    elif not above and not right:
+        return "top_right"
+    elif not above:
+        return "top"
+    elif not left and not below:
+        return "bottom_left"
+    elif not right and not below:
+        return "bottom_right"
+    elif not below:
+        return "bottom"
+    elif not left:
+        return "left"
+    elif not right:
+        return "right"
+    else:
+        return "center"
+
+def draw_tiled_background(bg_texture, world_width, world_height):
+    """Tile the background image across the entire world."""
+    x = 0
+    while x < world_width:
+        y = 0
+        while y < world_height:
+            draw_texture(bg_texture, x, y, WHITE)
+            y += bg_texture.height
+        x += bg_texture.width
+
+def draw_level(level, terrain_texture=None):
+    """Draws the solid tiles using the terrain spritesheet, or fallback rects."""
+    from level import TILE_ROWS, TILE_COLS
+
     for row in range(TILE_ROWS):
         for col in range(TILE_COLS):
             if level[row][col] == TILE_SOLID:
                 x = col * TILE_SIZE
                 y = row * TILE_SIZE
-                draw_rectangle(x, y, TILE_SIZE, TILE_SIZE, DARKGRAY)
-                draw_rectangle_lines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
 
+                if terrain_texture is not None:
+                    variant = get_terrain_variant(level, row, col)
+                    tc, tr = TERRAIN_TILES[variant]
+                    source = Rectangle(
+                        tc * TERRAIN_TILE_SIZE,
+                        tr * TERRAIN_TILE_SIZE,
+                        TERRAIN_TILE_SIZE,
+                        TERRAIN_TILE_SIZE
+                    )
+                    dest = Rectangle(x, y, TILE_SIZE, TILE_SIZE)
+                    draw_texture_pro(terrain_texture, source, dest,
+                                     Vector2(0, 0), 0.0, WHITE)
+                else:
+                    draw_rectangle(x, y, TILE_SIZE, TILE_SIZE, DARKGRAY)
+                    draw_rectangle_lines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
 
 COIN_FRAME_COUNT = 6
 

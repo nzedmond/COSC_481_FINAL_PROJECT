@@ -3,15 +3,22 @@ from pyray import *
 from constants import *
 from level import parse_level, LEVEL, WORLD_WIDTH, WORLD_HEIGHT
 from player import Player
-from renderer import draw_level, draw_coins, update_camera
+from renderer import draw_level, draw_coins, update_camera, draw_tiled_background
 from game_state import GameState
 
 
 def main():
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Raylib 2D Platformer Clone (Stomp Mechanic)".encode('utf-8'))
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, b"Crossing Kabgayi - The Broken Sanctuary")
     SetTargetFPS(60)
 
     game_level, collectibles, enemies = parse_level(LEVEL)
+    
+    # --- Load inside_church textures ---
+    terrain_tex = load_texture(b"Assets/inside_church/Terrain/Terrain(16x16).png")
+    bg_tex = load_texture(b"Assets/inside_church/Background/Gray.png")
+    
+    
+    coin_sheet = load_texture(b"coins/rotate.png")
 
     coin_sheet = load_texture("coins/rotate.png".encode())
     coin_frame = 0
@@ -79,10 +86,12 @@ def main():
 
         # --- Draw ---
         BeginDrawing()
-        ClearBackground(SKYBLUE)
+        ClearBackground(DARKGRAY)
 
         BeginMode2D(camera)
-        draw_level(game_level)
+        draw_tiled_background(bg_tex, WORLD_WIDTH, WORLD_HEIGHT)
+        
+        draw_level(game_level, terrain_tex)
         draw_coins(collectibles, coin_sheet, coin_frame)
         for enemy in enemies:
             enemy.draw()
@@ -114,6 +123,8 @@ def main():
         EndDrawing()
 
     unload_texture(coin_sheet)
+    unload_texture(terrain_tex)
+    unload_texture(bg_tex)
     CloseWindow()
 
 

@@ -87,3 +87,18 @@ Documentation: "Added level pictures and planned per-level game mechanics"
 
 Next/To Do:
 * Write the game base code (skeleton)/recycle the starter code to match my theme
+
+
+### Date: 2026/04/17 2:00 PM
+**Goal**
+Draw game background (level 1) to match the theme
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI: "Drew/loaded sprites into the predefined rectangular positions"
+
+Next/To Do:
+* 
