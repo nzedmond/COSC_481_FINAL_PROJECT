@@ -184,10 +184,3 @@ class Player:
         self.is_grounded = False
         self.jump_count = 0
 
-    def draw(self):
-        """Draws the player at their world coordinates."""
-        draw_rectangle(int(self.x), int(self.y), int(self.width), int(self.height), BLUE)
-        if self.is_grounded:
-            draw_rectangle_lines(int(self.x), int(self.y), int(self.width), int(self.height), WHITE)
-        else:
-            draw_rectangle_lines(int(self.x), int(self.y), int(self.width), int(self.height), GRAY)

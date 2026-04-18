@@ -24,17 +24,15 @@ TILE_SOLID = 1
 TILE_COIN = 2
 TILE_ENEMY = 3
 
-# ---- Terrain Spritesheet --------
+# --- Cemetery Tileset source rects within Tiles.png (352x384) ---
+# Stone brick face — used for solid interior tiles (center of the cross shape)
+CEMETERY_FILL_X = 64
+CEMETERY_FILL_Y = 64
+CEMETERY_FILL_W = 64
+CEMETERY_FILL_H = 64
 
-TERRAIN_TILE_SIZE = 16
-TERRAIN_TILES = {
-    "top_left": (0, 0),
-    "top": (1, 0),
-    "top_right": (2, 0),
-    "left": (0, 1),
-    "center": (1, 1),
-    "right": (2, 1),
-    "bottom_left": (0, 2),
-    "bottom": (1, 2),
-    "bottom_right": (2, 2),
-}
+# Grass-topped stone — used for the exposed top surface of platforms
+CEMETERY_SURFACE_X = 192
+CEMETERY_SURFACE_Y = 0
+CEMETERY_SURFACE_W = 64
+CEMETERY_SURFACE_H = 64
