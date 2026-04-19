@@ -97,8 +97,6 @@ class MenuScreen:
 # ---------------------------------------------------------------------------
 
 class GameplayScreen:
-    INITIAL_LIVES = 3
-
     def __init__(self, manager, res):
         self.manager = manager
         self.res     = res
@@ -109,7 +107,6 @@ class GameplayScreen:
         self.game_level, self.collectibles, self.enemies = parse_level(LEVEL)
         self.player     = Player(TILE_SIZE * 2, TILE_SIZE * 14)
         self.score      = 0
-        self.lives      = self.INITIAL_LIVES
         self.coin_frame = 0
         self.anim_timer = 0.0
 
@@ -160,12 +157,10 @@ class GameplayScreen:
             self.score += 100
             self.player.vy = STOMP_BOUNCE
         elif hit_type == "LETHAL":
-            self.lives -= 1
-            if self.lives <= 0:
+            self.player.take_damage(10)
+            self.player.reset()
+            if self.player.health <= 0:
                 self.manager.switch_to("GAME_OVER", score=self.score)
-            else:
-                self.player.reset()
-                self.score = max(0, self.score - 50)
 
     def draw_world(self):
         """Draw the gameplay scene without begin/end_drawing.
@@ -180,13 +175,25 @@ class GameplayScreen:
         self.player.draw()
         end_mode_2d()
 
-        # HUD
+        # HUD — score (top-right)
         score_text = f"Score: {self.score}".encode()
         draw_text(score_text,
                   SCREEN_WIDTH - measure_text(score_text, 20) - 10, 10, 20, WHITE)
 
-        lives_text = f"Lives: {self.lives}".encode()
-        draw_text(lives_text, 10, 10, 20, WHITE)
+        # HUD — health bar (top-left)
+        bar_x, bar_y, bar_w, bar_h = 10, 10, 200, 18
+        hp_pct = self.player.health / self.player.max_health
+        if hp_pct > 0.6:
+            bar_color = GREEN
+        elif hp_pct > 0.3:
+            bar_color = ORANGE
+        else:
+            bar_color = RED
+        draw_rectangle(bar_x, bar_y, bar_w, bar_h, Color(40, 40, 40, 200))          # background
+        draw_rectangle(bar_x, bar_y, int(bar_w * hp_pct), bar_h, bar_color)          # fill
+        draw_rectangle_lines(bar_x, bar_y, bar_w, bar_h, WHITE)                      # border
+        hp_label = f"HP  {self.player.health}/{self.player.max_health}".encode()
+        draw_text(hp_label, bar_x + 4, bar_y + 1, 16, WHITE)
 
     def draw(self):
         begin_drawing()

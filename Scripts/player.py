@@ -18,6 +18,11 @@ class Player:
         self.vx = 0.0
         self.vy = 0.0
         self.is_grounded = False
+
+        # Health — persists between respawns; depletes on enemy hits
+        self.max_health = 100
+        self.health     = self.max_health
+
         self.sprites = {
             "idle": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Idle (32x32).png"),
             "run":  load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Run (32x32).png"),
@@ -52,6 +57,10 @@ class Player:
         dest = Rectangle(self.x, self.y, self.width, self.height)
         draw_texture_pro(tex, source, dest, Vector2(0, 0), 0.0, WHITE)
         
+    def take_damage(self, amount):
+        """Reduce health by amount (clamped to 0)."""
+        self.health = max(0, self.health - amount)
+
     def get_rect(self):
         """Returns the player's collision bounding box (top-left, width, height)."""
         return (self.x, self.y, self.width, self.height)
@@ -75,8 +84,6 @@ class Player:
                 self.vy = JUMP_VELOCITY
             else:
                 self.jump_count = 0
-
-            draw_text(f"jump count: {self.jump_count}", 200, 280, 16, WHITE)
 
         # 3. Apply Gravity
         self.vy += GRAVITY * delta_time

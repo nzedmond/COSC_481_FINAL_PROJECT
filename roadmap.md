@@ -131,3 +131,29 @@ UI: "Added fruit collectibles"
 
 Next/To Do:
 * Replace coins with theme-specific collectibles
+
+### Date: 2026/04/19 9:00 AM
+**Goal**
+Replace lives system with a health bar and fix instant game-over bug
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI&Mechanics: 
+- Add Player.health (100 HP max) and take_damage(amount); health persists
+  across respawns within a run so damage accumulates throughout
+- Enemy hit deducts 10 HP instead of consuming a life; game over
+  triggers only when health reaches 0 (after 10 hits)
+- Draw a colour-coded HP bar in the HUD (green → orange → red) with a
+  numeric HP readout; score moved to top-right
+- Remove stale jump-count draw_text debug call from Player.update
+- Move all enemy spawns to the second half of the level (col 25+) so
+  the player has a safe start zone; fixes the immediate game-over caused
+  by an enemy sharing the player's spawn tile at row 14 col 2
+
+
+Next/To Do:
+* Replace coins with theme-specific collectibles
+* improve enemy logic
