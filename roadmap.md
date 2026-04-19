@@ -101,4 +101,33 @@ Draw game background (level 1) to match the theme
 UI: "Drew/loaded sprites into the predefined rectangular positions"
 
 Next/To Do:
-* 
+* Replace coins with theme-based collectibles
+
+### Date: 2026/04/18 8:00 AM
+**Goal**
+Replace coins with theme-based collectibles
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI: "Added fruit collectibles"
+
+Next/To Do:
+* Implement a screen manager like the one from midterm project
+
+
+### Date: 2026/04/19 9:00 AM
+**Goal**
+Implement a screen manager like the one from midterm project
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI: "Added fruit collectibles"
+
+Next/To Do:
+* Replace coins with theme-specific collectibles
