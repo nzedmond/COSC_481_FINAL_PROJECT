@@ -121,11 +121,12 @@ The objective is not simply to reach the safe place, but to experience the emoti
   - **Single jump**
 
 **Movement**
-- Walk, run, single jump (no wall jump — open terrain)
+- Walk, run, single and double jumps
 - Idle state (hiding/pausing behind cover)
 
 **Enemy Mechanics**
-- Enemies that shoot projectiles toward the player
+- Enemies that shoot projectiles toward the player: 
+  - The projectiles can reach anywhere on the play screen except under the tiles where the player can hide. 
 - No combat — Odile cannot fight back, only evade
 - Cover system: objects to hide behind to avoid gunfire
 

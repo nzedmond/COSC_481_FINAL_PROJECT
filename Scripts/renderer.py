@@ -56,7 +56,7 @@ def draw_level(level, terrain_texture=None):
                 draw_rectangle_lines(x, y, TILE_SIZE, TILE_SIZE, BLACK)
 
 
-COIN_FRAME_COUNT = 6
+COIN_FRAME_COUNT = 17  # Apple.png spritesheet: 544x32, 17 frames of 32x32
 
 
 def draw_coins(coins, coin_sheet, coin_frame):

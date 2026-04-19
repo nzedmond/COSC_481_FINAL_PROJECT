@@ -16,7 +16,7 @@ class Resources:
         self.grass_bg1  = load_texture(b"Assets/cemetery/Grass_background_1.png")
         self.grass_bg2  = load_texture(b"Assets/cemetery/Grass_background_2.png")
         self.tiles      = load_texture(b"Assets/cemetery/Tiles.png")
-        self.coin_sheet = load_texture(b"coins/rotate.png")
+        self.coin_sheet = load_texture(b"Assets/inside_church/Items/Fruits/Apple.png")
 
     def unload(self):
         for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "coin_sheet"):

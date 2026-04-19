@@ -156,4 +156,4 @@ UI&Mechanics:
 
 Next/To Do:
 * Replace coins with theme-specific collectibles
-* improve enemy logic
+* improve enemy logic: Allow the enemy to shoot projectiles and the player can hide under the tiles and make sure bit to get hit. 
