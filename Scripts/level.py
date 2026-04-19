@@ -7,7 +7,6 @@ from constants import *
 #   0 = air
 #   1 = solid tile
 #   2 = coin  (extracted by parse_level, replaced with air)
-#   3 = enemy (extracted by parse_level, replaced with air)
 #
 # Platform heights (world-y = row × 40):
 #   row  3 → y=120  (highest)
@@ -16,7 +15,6 @@ from constants import *
 #   row  9 → y=360
 #   row 11 → y=440
 #   row 13 → y=520
-#   row 14 → y=560  (enemy patrol row, just above ground)
 #   row 15 → y=600  (solid ground)
 # ---------------------------------------------------------------------------
 
@@ -43,16 +41,16 @@ LEVEL = [
     [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,2,0,0, 0,0,0,0,0,0,0,0,0,0, 0,2,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
     # 9 — mid platforms
     [0,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,1,1,1,1,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,1,1,1],
-    # 10 — enemies in the second half only (col 25+)
-    [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,3,0, 0,0,0,2,0,0,0,0,0,0, 0,0,3,0,0,0,0,0,0,0],
+    # 10
+    [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,2,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
     # 11 — lower-mid platforms
     [0,0,0,0,0,0,0,0,0,0, 0,0,1,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,1,1,0, 0,0,0,0,0,0,0,0,0,0],
     # 12 — coins
     [0,2,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,2,0, 0,0,0,0,0,0,0,0,0,0, 0,2,0,0,0,0,0,0,0,0, 0,0,0,0,2,0,0,0,0,0],
     # 13 — low platforms
     [0,0,0,0,1,1,1,1,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,1,1,1,1],
-    # 14 — enemy patrol row just above ground, second half only (col 25+)
-    [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,3, 0,0,0,0,3,0,0,0,0,0, 0,0,0,0,0,0,0,3,0,0],
+    # 14
+    [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
     # 15 — solid ground
     [1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1],
 ]
@@ -64,12 +62,8 @@ WORLD_HEIGHT = TILE_ROWS * TILE_SIZE
 
 
 def parse_level(level):
-    """Extract coins and enemies from the tilemap, return the clean collision
-    map plus lists of entity spawn positions / objects."""
-    from enemy import Enemy
-
-    coins   = []
-    enemies = []
+    """Extract coins from the tilemap; return the clean collision map and coin list."""
+    coins     = []
     new_level = [row[:] for row in level]
 
     for r in range(TILE_ROWS):
@@ -81,8 +75,4 @@ def parse_level(level):
                 coins.append((x + TILE_SIZE / 2, y + TILE_SIZE / 2))
                 new_level[r][c] = TILE_AIR
 
-            elif new_level[r][c] == TILE_ENEMY:
-                enemies.append(Enemy(x, y))
-                new_level[r][c] = TILE_AIR
-
-    return new_level, coins, enemies
+    return new_level, coins, []

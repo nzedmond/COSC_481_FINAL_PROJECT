@@ -3,6 +3,7 @@ from constants import *
 from level import parse_level, LEVEL, WORLD_WIDTH, WORLD_HEIGHT
 from player import Player
 from renderer import draw_level, draw_coins, update_camera, draw_parallax_layer
+from enemy import Bullet
 
 
 # ---------------------------------------------------------------------------
@@ -105,7 +106,7 @@ class GameplayScreen:
 
     def _init_game(self):
         """Reset all gameplay state for a fresh run."""
-        self.game_level, self.collectibles, self.enemies = parse_level(LEVEL)
+        self.game_level, self.collectibles, _ = parse_level(LEVEL)
         self.player        = Player(TILE_SIZE * 2, TILE_SIZE * 14)
         self.score         = 0
         self.all_collected = False   # True once every apple is picked up
@@ -113,6 +114,11 @@ class GameplayScreen:
         self.anim_timer    = 0.0
         self.start_frame   = 0
         self.start_timer   = 0.0
+
+        # Bullet shooter
+        self.bullets       = []
+        self.shoot_timer   = 0.0
+        self.shoot_interval = 2.0   # seconds between shots
 
         self.camera          = Camera2D()
         self.camera.target   = Vector2(self.player.x, self.player.y)
@@ -143,11 +149,24 @@ class GameplayScreen:
 
         self.player.update(dt, self.game_level)
 
-        for enemy in self.enemies:
-            enemy.update(dt, self.game_level)
-
         update_camera(self.camera, self.player,
                       WORLD_WIDTH, WORLD_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
+
+        # --- Bullet shooter: fire from top-right of the visible screen ---
+        self.shoot_timer += dt
+        if self.shoot_timer >= self.shoot_interval:
+            self.shoot_timer = 0.0
+            spawn_x = self.camera.target.x + SCREEN_WIDTH  / 2
+            spawn_y = self.camera.target.y - SCREEN_HEIGHT / 2
+            target_x = self.player.x + self.player.width  / 2
+            target_y = self.player.y + self.player.height / 2
+            self.bullets.append(Bullet(spawn_x, spawn_y, target_x, target_y))
+
+        for bullet in self.bullets:
+            bullet.update(dt, self.game_level)
+
+        # Remove spent bullets
+        self.bullets = [b for b in self.bullets if b.active]
 
         # Collect apples
         collected = self.player.check_collection(self.collectibles)
@@ -163,17 +182,16 @@ class GameplayScreen:
             self.manager.switch_to("WIN", score=self.score)
             return
 
-        # Enemy collision
-        hit_type, enemy_idx = self.player.check_enemy_collision(self.enemies)
-        if hit_type == "STOMP":
-            self.enemies.pop(enemy_idx)
-            self.score += 100
-            self.player.vy = STOMP_BOUNCE
-        elif hit_type == "LETHAL":
-            self.player.take_damage(10)
-            self.player.reset()
-            if self.player.health <= 0:
-                self.manager.switch_to("GAME_OVER", score=self.score)
+        # Bullet collision
+        player_rect = self.player.get_rect()
+        for bullet in self.bullets:
+            if check_collision_recs(player_rect, bullet.get_rect()):
+                bullet.active = False
+                self.player.take_damage(10)
+                self.player.reset()
+                if self.player.health <= 0:
+                    self.manager.switch_to("GAME_OVER", score=self.score)
+                    return
 
     def draw_world(self):
         """Draw the gameplay scene without begin/end_drawing.
@@ -190,8 +208,8 @@ class GameplayScreen:
             draw_texture_pro(self.res.start_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
         draw_coins(self.collectibles, self.res.coin_sheet, self.coin_frame)
-        for enemy in self.enemies:
-            enemy.draw()
+        for bullet in self.bullets:
+            bullet.draw()
         self.player.draw()
 
         # Finish-line marker — glows green once all apples are collected
