@@ -24,6 +24,10 @@ TILE_SOLID = 1
 TILE_COIN = 2
 TILE_ENEMY = 3
 
+# --- Win condition ---
+# Column index of the finish zone (right end of the 50-col level)
+DEST_COL = 47
+
 # --- Cemetery Tileset source rects within Tiles.png (352x384) ---
 # Stone brick face — used for solid interior tiles (center of the cross shape)
 CEMETERY_FILL_X = 64

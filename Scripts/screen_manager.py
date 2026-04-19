@@ -17,9 +17,10 @@ class Resources:
         self.grass_bg2  = load_texture(b"Assets/cemetery/Grass_background_2.png")
         self.tiles      = load_texture(b"Assets/cemetery/Tiles.png")
         self.coin_sheet = load_texture(b"Assets/inside_church/Items/Fruits/Apple.png")
+        self.start_tex  = load_texture(b"Assets/inside_church/Items/Checkpoints/Start/Start (Moving) (64x64).png")
 
     def unload(self):
-        for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "coin_sheet"):
+        for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "coin_sheet", "start_tex"):
             unload_texture(getattr(self, attr))
 
 
@@ -105,10 +106,13 @@ class GameplayScreen:
     def _init_game(self):
         """Reset all gameplay state for a fresh run."""
         self.game_level, self.collectibles, self.enemies = parse_level(LEVEL)
-        self.player     = Player(TILE_SIZE * 2, TILE_SIZE * 14)
-        self.score      = 0
-        self.coin_frame = 0
-        self.anim_timer = 0.0
+        self.player        = Player(TILE_SIZE * 2, TILE_SIZE * 14)
+        self.score         = 0
+        self.all_collected = False   # True once every apple is picked up
+        self.coin_frame    = 0
+        self.anim_timer    = 0.0
+        self.start_frame   = 0
+        self.start_timer   = 0.0
 
         self.camera          = Camera2D()
         self.camera.target   = Vector2(self.player.x, self.player.y)
@@ -125,7 +129,13 @@ class GameplayScreen:
         self.anim_timer += dt
         if self.anim_timer >= 0.1:
             self.anim_timer  = 0.0
-            self.coin_frame  = (self.coin_frame + 1) % 6
+            self.coin_frame  = (self.coin_frame + 1) % 17  # Apple.png has 17 frames
+
+        # Animate start marker
+        self.start_timer += dt
+        if self.start_timer >= 0.08:
+            self.start_timer = 0.0
+            self.start_frame = (self.start_frame + 1) % 17  # Start (Moving) has 17 frames
 
         if is_key_pressed(KEY_P):
             self.manager.switch_to("PAUSED")
@@ -139,14 +149,17 @@ class GameplayScreen:
         update_camera(self.camera, self.player,
                       WORLD_WIDTH, WORLD_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT)
 
-        # Collect coins
+        # Collect apples
         collected = self.player.check_collection(self.collectibles)
         for i in sorted(collected, reverse=True):
             self.collectibles.pop(i)
             self.score += 10
 
-        # Win when all coins are gone
         if not self.collectibles:
+            self.all_collected = True
+
+        # Win only when ALL apples are collected AND player reaches the finish
+        if self.all_collected and self.player.x + self.player.width >= DEST_COL * TILE_SIZE:
             self.manager.switch_to("WIN", score=self.score)
             return
 
@@ -169,10 +182,30 @@ class GameplayScreen:
 
         begin_mode_2d(self.camera)
         draw_level(self.game_level, self.res.tiles)
+
+        # Start marker at player spawn
+        if self.res.start_tex.id > 0:
+            src  = Rectangle(self.start_frame * 64, 0, 64, 64)
+            dest = Rectangle(TILE_SIZE * 2 - 16, TILE_SIZE * 15 - 64, 64, 64)
+            draw_texture_pro(self.res.start_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
+
         draw_coins(self.collectibles, self.res.coin_sheet, self.coin_frame)
         for enemy in self.enemies:
             enemy.draw()
         self.player.draw()
+
+        # Finish-line marker — glows green once all apples are collected
+        fx = DEST_COL * TILE_SIZE
+        fy = 10 * TILE_SIZE          # top of the marker (a few tiles above ground)
+        fh = 5 * TILE_SIZE           # height of the coloured zone
+        pole_color  = GREEN if self.all_collected else Color(160, 160, 160, 200)
+        flag_color  = GREEN if self.all_collected else Color(100, 100, 100, 180)
+        draw_rectangle(fx + TILE_SIZE // 2 - 3, fy, 6, fh, pole_color)           # pole
+        draw_rectangle(fx + TILE_SIZE // 2 + 3, fy, TILE_SIZE, TILE_SIZE, flag_color)  # flag
+        label = b"FINISH" if self.all_collected else b"FINISH"
+        draw_text(label, fx - measure_text(label, 16) // 2 + TILE_SIZE // 2,
+                  fy + fh + 4, 16, pole_color)
+
         end_mode_2d()
 
         # HUD — score (top-right)

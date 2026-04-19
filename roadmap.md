@@ -157,3 +157,17 @@ UI&Mechanics:
 Next/To Do:
 * Replace coins with theme-specific collectibles
 * improve enemy logic: Allow the enemy to shoot projectiles and the player can hide under the tiles and make sure bit to get hit. 
+
+### Date: 2026/04/19 5:00 PM
+**Goal**
+Improve Enemy Logic
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI/Mechanics: improve enemy logic: Allow the enemy to shoot projectiles and the player can hide under the tiles and make sure bit to get hit. 
+
+Next/To Do:
+* Change game over logic: Game is over when the player finishes all the collectibles and made it to the finish line.
