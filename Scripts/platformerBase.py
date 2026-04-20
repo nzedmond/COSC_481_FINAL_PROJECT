@@ -7,7 +7,7 @@ def main():
     init_window(SCREEN_WIDTH, SCREEN_HEIGHT, b"Crossing Kabgayi - The Broken Sanctuary")
     set_target_fps(60)
 
-    res     = Resources()
+    res = Resources()
     manager = ScreenManager(res)
 
     while not window_should_close():
