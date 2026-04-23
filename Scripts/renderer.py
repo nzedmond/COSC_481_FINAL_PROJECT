@@ -28,9 +28,20 @@ def draw_parallax_layer(texture, camera_x, scroll_factor, screen_width, screen_h
         x += scaled_w
 
 
-def draw_level(level, terrain_texture=None):
-    """Draw solid tiles using the cemetery tileset, or fallback rectangles."""
+def draw_level(level, terrain_texture=None, variant='cemetery'):
+    """Draw solid tiles using the given tileset variant, or fallback rectangles.
+
+    variant: 'cemetery' uses the grass-stone cemetery sheet;
+             'church'   uses the gray-stone inside-church sheet.
+    """
     from level import TILE_ROWS, TILE_COLS
+
+    if variant == 'church':
+        surface_src = (CHURCH_SURFACE_X, CHURCH_SURFACE_Y, CHURCH_SURFACE_W, CHURCH_SURFACE_H)
+        fill_src    = (CHURCH_FILL_X,    CHURCH_FILL_Y,    CHURCH_FILL_W,    CHURCH_FILL_H)
+    else:
+        surface_src = (CEMETERY_SURFACE_X, CEMETERY_SURFACE_Y, CEMETERY_SURFACE_W, CEMETERY_SURFACE_H)
+        fill_src    = (CEMETERY_FILL_X,    CEMETERY_FILL_Y,    CEMETERY_FILL_W,    CEMETERY_FILL_H)
 
     for row in range(TILE_ROWS):
         for col in range(TILE_COLS):
@@ -41,14 +52,9 @@ def draw_level(level, terrain_texture=None):
             y = row * TILE_SIZE
 
             if terrain_texture is not None and terrain_texture.id > 0:
-                # Exposed top → grass-stone surface tile; buried → brick fill.
                 is_surface = (row == 0 or level[row - 1][col] != TILE_SOLID)
-                if is_surface:
-                    src = Rectangle(CEMETERY_SURFACE_X, CEMETERY_SURFACE_Y,
-                                    CEMETERY_SURFACE_W, CEMETERY_SURFACE_H)
-                else:
-                    src = Rectangle(CEMETERY_FILL_X, CEMETERY_FILL_Y,
-                                    CEMETERY_FILL_W, CEMETERY_FILL_H)
+                sx, sy, sw, sh = surface_src if is_surface else fill_src
+                src  = Rectangle(sx, sy, sw, sh)
                 dest = Rectangle(x, y, TILE_SIZE, TILE_SIZE)
                 draw_texture_pro(terrain_texture, src, dest, Vector2(0, 0), 0.0, WHITE)
             else:

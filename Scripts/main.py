@@ -4,7 +4,7 @@ from screen_manager import ScreenManager, Resources
 
 
 def main():
-    init_window(SCREEN_WIDTH, SCREEN_HEIGHT, b"Crossing Kabgayi - The Broken Sanctuary")
+    init_window(SCREEN_WIDTH, SCREEN_HEIGHT, b"Crossing Kabgayi - The Escape")
     set_target_fps(60)
 
     res = Resources()

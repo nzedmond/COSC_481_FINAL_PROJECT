@@ -1,26 +1,15 @@
 from constants import *
 
 # ---------------------------------------------------------------------------
-# Cemetery level — 16 rows × 50 columns, TILE_SIZE = 40 px
+# Level 1 — Cemetery  16 rows × 50 columns, TILE_SIZE = 40 px
 #
 # Legend:
 #   0 = air
 #   1 = solid tile
 #   2 = coin  (extracted by parse_level, replaced with air)
-#
-# Platform heights (world-y = row × 40):
-#   row  3 → y=120  (highest)
-#   row  5 → y=200
-#   row  7 → y=280
-#   row  9 → y=360
-#   row 11 → y=440
-#   row 13 → y=520
-#   row 15 → y=600  (solid ground)
 # ---------------------------------------------------------------------------
 
-LEVEL = [
-    # col  0         1         2         3         4
-    #      0123456789012345678901234567890123456789012345678 9
+LEVEL_1 = [
     # 0 — open sky
     [0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0],
     # 1
@@ -55,19 +44,91 @@ LEVEL = [
     [1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1],
 ]
 
-TILE_ROWS = len(LEVEL)
-TILE_COLS = len(LEVEL[0])
+# ---------------------------------------------------------------------------
+# Level 2 — Inside Church  20 rows × 50 columns, TILE_SIZE = 40 px
+#
+# Enclosed dungeon: solid ceiling (row 0), solid floor (row 19),
+# solid side walls (col 0 and col 49) throughout.
+# Player spawns bottom-left (col 2, row 18); goal is col 47.
+# ---------------------------------------------------------------------------
+
+LEVEL_2 = [
+    # row 0 — solid ceiling
+    [1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1],
+    # row 1 — high open (coins skipped — ceiling too close to collect safely)
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 2 — upper platforms
+    [1,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,1,1,1,1,0,0,0,0,1],
+    # row 3 — coins above upper platforms + open space
+    [1,0,2,0,2,0,0,0,0,0, 0,0,0,2,0,0,0,0,0,0, 0,0,0,0,2,0,2,0,0,0, 0,0,0,0,0,0,0,2,0,0, 0,2,0,0,0,0,0,0,0,1],
+    # row 4 — platforms
+    [1,0,0,0,0,0,0,0,0,0, 0,1,1,1,1,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,1,1,1,1,0,0,0,0,0, 0,0,0,0,0,1,1,1,0,1],
+    # row 5 — coins
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,2,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,2,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 6 — platforms
+    [1,0,1,1,1,1,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,1,1,1,1,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,1,1,1,0,0,0,1],
+    # row 7 — coins
+    [1,0,0,0,0,0,0,0,2,0, 0,0,0,0,0,0,0,0,0,2, 0,0,0,0,0,0,0,0,0,0, 0,0,2,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 8 — platforms
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,1,1,1,1, 0,0,0,0,0,0,0,0,0,1],
+    # row 9 — coins
+    [1,0,0,2,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,2,0, 0,2,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,2,0,0,0,0,0,0,0,1],
+    # row 10 — platforms
+    [1,0,0,0,0,1,1,1,1,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,1,1,1,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,1,1,1],
+    # row 11 — dense coin cluster (inspired by image's lower-left apple grid)
+    [1,0,2,0,0,0,0,0,0,0, 2,0,2,0,0,0,0,2,0,0, 0,2,0,0,0,0,0,0,0,2, 0,0,2,0,0,0,2,0,2,0, 0,0,0,2,0,0,0,0,0,1],
+    # row 12 — platforms
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,0,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,1,1,1,1,0,0,0,0,0, 0,0,0,0,1,1,1,0,0,1],
+    # row 13 — coins
+    [1,0,0,0,2,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,2, 0,0,0,2,0,0,0,0,0,0, 0,0,0,0,0,0,0,2,0,0, 0,0,2,0,0,0,0,0,0,1],
+    # row 14 — platforms (staircase from left side)
+    [1,0,1,1,1,1,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 1,1,1,1,0,0,0,0,0,0, 0,0,0,0,0,0,1,1,1,1, 0,0,0,0,0,0,0,0,0,1],
+    # row 15 — coins
+    [1,0,0,0,0,0,0,0,2,0, 0,0,2,0,0,0,0,0,0,0, 0,0,0,0,2,0,0,0,0,0, 0,2,0,0,0,0,0,0,0,0, 0,0,0,0,2,0,0,0,0,1],
+    # row 16 — platforms (staircase base near floor)
+    [1,0,1,1,1,1,0,0,0,0, 0,0,0,1,1,1,1,0,0,0, 0,0,0,0,0,0,0,0,0,0, 1,1,1,1,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 17 — open
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 18 — player spawn row (open above floor)
+    [1,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,0, 0,0,0,0,0,0,0,0,0,1],
+    # row 19 — solid floor
+    [1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1, 1,1,1,1,1,1,1,1,1,1],
+]
+
+# ---------------------------------------------------------------------------
+# Active level globals — updated by activate_level(); imported dynamically
+# inside function bodies in player.py, enemy.py, and renderer.py so they
+# always see the current values.
+# ---------------------------------------------------------------------------
+
+LEVEL = LEVEL_1
+TILE_ROWS  = len(LEVEL_1)
+TILE_COLS  = len(LEVEL_1[0])
 WORLD_WIDTH  = TILE_COLS * TILE_SIZE
 WORLD_HEIGHT = TILE_ROWS * TILE_SIZE
 
 
+def activate_level(n: int) -> None:
+    """Switch the module-level globals to level n (1 or 2)."""
+    global LEVEL, TILE_ROWS, TILE_COLS, WORLD_WIDTH, WORLD_HEIGHT
+    data = LEVEL_1 if n == 1 else LEVEL_2
+    LEVEL        = data
+    TILE_ROWS    = len(data)
+    TILE_COLS    = len(data[0])
+    WORLD_WIDTH  = TILE_COLS * TILE_SIZE
+    WORLD_HEIGHT = TILE_ROWS * TILE_SIZE
+
+
 def parse_level(level):
     """Extract coins from the tilemap; return the clean collision map and coin list."""
-    coins     = []
+    coins = []
     new_level = [row[:] for row in level]
 
-    for r in range(TILE_ROWS):
-        for c in range(TILE_COLS):
+    rows = len(new_level)
+    cols = len(new_level[0])
+
+    for r in range(rows):
+        for c in range(cols):
             x = c * TILE_SIZE
             y = r * TILE_SIZE
 

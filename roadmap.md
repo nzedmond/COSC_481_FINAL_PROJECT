@@ -171,3 +171,18 @@ UI/Mechanics: improve enemy logic: Allow the enemy to shoot projectiles and the 
 
 Next/To Do:
 * Change game over logic: Game is over when the player finishes all the collectibles and made it to the finish line.
+
+
+### Date: 2026/04/22 1:00 PM
+**Goal**
+Add player's starting point and a key to open the church at the end of level 1
+
+**Implementation**
+*Technical Plan/Credit*: 
+*Content Credit*: 
+
+**Commit message**
+UI/Mechanics: added a texture for player's starting point and a key texture for end (open the church into level 2). 
+
+Next/To Do:
+* Change game over logic: Game is over when the player finishes all the collectibles and made it to the finish line.

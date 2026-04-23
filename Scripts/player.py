@@ -93,7 +93,7 @@ class Player:
         # --- Reset grounded state at start of frame update ---
         self.is_grounded = False
 
-        # 4. Apply Movement (Separated for X and Y collision checks)
+        # 4. Apply Movement
         self.x += self.vx * delta_time
         self.handle_tile_collision(level, 'X')
 
@@ -162,12 +162,8 @@ class Player:
         return collected_indices
 
     def check_enemy_collision(self, enemies):
-        """Checks for collision with enemies and determines outcome (stomp or death).
-        Returns (hit_type, enemy_index) or (None, -1).
-        hit_type: "STOMP" (safe kill) or "LETHAL" (death)
-        """
         player_rect = self.get_rect()
-        px, py, pw, ph = player_rect
+        py, ph = player_rect
 
         for i, enemy in enumerate(enemies):
             enemy_rect = enemy.get_rect()

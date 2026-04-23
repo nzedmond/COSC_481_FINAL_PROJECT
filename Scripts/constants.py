@@ -40,3 +40,16 @@ CEMETERY_SURFACE_X = 192
 CEMETERY_SURFACE_Y = 0
 CEMETERY_SURFACE_W = 64
 CEMETERY_SURFACE_H = 64
+
+# --- Inside Church Tileset source rects within Terrain (16x16).png (352x176) ---
+# Gray stone interior fill tile (col 1, row 1 of the stone pack)
+CHURCH_FILL_X = 16
+CHURCH_FILL_Y = 16
+CHURCH_FILL_W = 16
+CHURCH_FILL_H = 16
+
+# Gray stone surface tile — slightly lighter top (col 1, row 0 of the stone pack)
+CHURCH_SURFACE_X = 16
+CHURCH_SURFACE_Y = 0
+CHURCH_SURFACE_W = 16
+CHURCH_SURFACE_H = 16
