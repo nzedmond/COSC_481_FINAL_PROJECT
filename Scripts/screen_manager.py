@@ -9,12 +9,12 @@ from enemy import Bullet
 # ---------------------------------------------------------------------------
 # Level 2 door — top-right corner, sitting on the row-2 platform (cols 41-44)
 # ---------------------------------------------------------------------------
-_L2_DOOR_COL    = 42
-_L2_DOOR_ROW    = 1
-_L2_DOOR_X      = _L2_DOOR_COL * TILE_SIZE   # 1680 px
-_L2_DOOR_Y      = _L2_DOOR_ROW * TILE_SIZE   #   40 px  (just below solid ceiling)
-_L2_DOOR_SIZE   = 64                          # sprite is 64 × 64
-_L2_DOOR_FRAMES = 8                           # End (Pressed) spritesheet
+_L2_DOOR_COL = 42
+_L2_DOOR_ROW = 1
+_L2_DOOR_X = _L2_DOOR_COL * TILE_SIZE + 220   # 1680 px
+_L2_DOOR_Y = _L2_DOOR_ROW * TILE_SIZE   #   40 px  (just below solid ceiling)
+_L2_DOOR_W = 66                               # door.png width
+_L2_DOOR_H = 96                               # door.png height
 
 # Pointer signs: (world_x, world_y, direction)
 # 'right' → ptr_right texture;  'up' → ptr_up texture
@@ -32,20 +32,20 @@ _L2_POINTERS = [
 
 class Resources:
     def __init__(self):
-        self.bg0        = load_texture(b"Assets/cemetery/Background_0.png")
-        self.bg1        = load_texture(b"Assets/cemetery/Background_1.png")
+        self.bg0 = load_texture(b"Assets/cemetery/Background_0.png")
+        self.bg1 = load_texture(b"Assets/cemetery/Background_1.png")
         self.grass_bg1  = load_texture(b"Assets/cemetery/Grass_background_1.png")
         self.grass_bg2  = load_texture(b"Assets/cemetery/Grass_background_2.png")
-        self.tiles      = load_texture(b"Assets/cemetery/Tiles.png")
+        self.tiles = load_texture(b"Assets/cemetery/Tiles.png")
         self.church_tiles = load_texture(b"Assets/inside_church/Terrain/Terrain (16x16).png")
-        self.coin_sheet   = load_texture(b"Assets/inside_church/Items/Fruits/Apple.png")
-        self.start_tex    = load_texture(b"Assets/inside_church/Items/Checkpoints/Start/Start (Moving) (64x64).png")
-        self.key_tex      = load_texture(b"Assets/outside_church/4 Animated objects/Key.png")
+        self.coin_sheet = load_texture(b"Assets/inside_church/Items/Fruits/Apple.png")
+        self.start_tex = load_texture(b"Assets/inside_church/Items/Checkpoints/Start/Start (Moving) (64x64).png")
+        self.key_tex = load_texture(b"Assets/key.png")
         # Level 2 — background, door, and directional pointer signs
-        self.church_bg    = load_texture(b"Assets/inside_church/churchbg.jpg")
-        self.end_tex      = load_texture(b"Assets/inside_church/Items/Checkpoints/End/End (Pressed) (64x64).png")
-        self.ptr_right    = load_texture(b"Assets/outside_church/3 Objects/Pointers/1.png")
-        self.ptr_up       = load_texture(b"Assets/outside_church/3 Objects/Pointers/7.png")
+        self.church_bg = load_texture(b"Assets/inside_church/churchbg.jpg")
+        self.end_tex = load_texture(b"Assets/door.png")
+        self.ptr_right = load_texture(b"Assets/outside_church/3 Objects/Pointers/1.png")
+        self.ptr_up = load_texture(b"Assets/outside_church/3 Objects/Pointers/7.png")
 
     def unload(self):
         for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "church_tiles",
@@ -68,7 +68,7 @@ def _draw_backgrounds(res, cam_x):
 def _draw_church_background(res):
     """Draw the church interior background image, scaled to fill the screen."""
     if res.church_bg.id > 0:
-        src  = Rectangle(0, 0, res.church_bg.width, res.church_bg.height)
+        src = Rectangle(0, 0, res.church_bg.width, res.church_bg.height)
         dest = Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
         draw_texture_pro(res.church_bg, src, dest, Vector2(0, 0), 0.0, WHITE)
     else:
@@ -91,10 +91,10 @@ class MenuScreen:
         pass
 
     def update(self, dt):
-        self.bg_x  += 60 * dt
+        self.bg_x += 60 * dt
         self.blink_t += dt
         if self.blink_t >= 0.55:
-            self.blink_t   = 0.0
+            self.blink_t = 0.0
             self.blink_vis = not self.blink_vis
 
         if is_key_pressed(KEY_ENTER):
@@ -131,8 +131,8 @@ class MenuScreen:
 
 class GameplayScreen:
     def __init__(self, manager, res):
-        self.manager   = manager
-        self.res       = res
+        self.manager = manager
+        self.res = res
         self.level_num = 1
         self._init_game(level_num=1)
 
@@ -150,29 +150,26 @@ class GameplayScreen:
         if carry_health is not None:
             self.player.health = max(1, carry_health)  # arrive alive
 
-        self.score         = 0
+        self.score = 0
         self.all_collected = False
-        self.coin_frame    = 0
-        self.anim_timer    = 0.0
-        self.start_frame   = 0
-        self.start_timer   = 0.0
+        self.coin_frame = 0
+        self.anim_timer = 0.0
+        self.start_frame = 0
+        self.start_timer = 0.0
 
-        self.bullets        = []
-        self.shoot_timer    = 0.0
+        self.bullets = []
+        self.shoot_timer = 0.0
         self.shoot_interval = 2.0 if level_num == 1 else 2.5   # L2 gets slightly longer gap
         # Second shooter — level 2 only (fires from bottom-left, creating crossfire)
-        self.shoot_timer2    = 1.5   # offset start so both don't fire at once
+        self.shoot_timer2 = 1.5   # offset start so both don't fire at once
         self.shoot_interval2 = 3.5
 
-        # Door animation (level 2 only)
-        self.end_frame = 0
-        self.end_timer = 0.0
 
         self.camera = Camera2D()
-        self.camera.target   = Vector2(self.player.x, self.player.y)
-        self.camera.offset   = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.camera.target = Vector2(self.player.x, self.player.y)
+        self.camera.offset = Vector2(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
         self.camera.rotation = 0.0
-        self.camera.zoom     = 1.0
+        self.camera.zoom = 1.0
 
     def on_enter(self, restart=False, level_num=None, carry_health=None, **kwargs):
         if restart:
@@ -190,11 +187,6 @@ class GameplayScreen:
         if self.start_timer >= 0.08:
             self.start_timer = 0.0
             self.start_frame = (self.start_frame + 1) % 17
-
-        self.end_timer += dt
-        if self.end_timer >= 0.1:
-            self.end_timer = 0.0
-            self.end_frame = (self.end_frame + 1) % _L2_DOOR_FRAMES
 
         if is_key_pressed(KEY_P):
             self.manager.switch_to("PAUSED")
@@ -249,7 +241,7 @@ class GameplayScreen:
                 return
         else:
             # Level 2: reach the End door in the top-right corner (no apple requirement)
-            door_rect = (_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_SIZE, _L2_DOOR_SIZE)
+            door_rect = (_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_W, _L2_DOOR_H)
             if check_collision_recs(player_rect, door_rect):
                 self.manager.switch_to("WIN", score=self.score)
                 return
@@ -294,10 +286,10 @@ class GameplayScreen:
             draw_texture_pro(self.res.key_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
         if self.level_num == 2:
-            # Animated End door in top-right corner
+            # Door in top-right corner
             if self.res.end_tex.id > 0:
-                src  = Rectangle(self.end_frame * _L2_DOOR_SIZE, 0, _L2_DOOR_SIZE, _L2_DOOR_SIZE)
-                dest = Rectangle(_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_SIZE, _L2_DOOR_SIZE)
+                src  = Rectangle(0, 0, _L2_DOOR_W, _L2_DOOR_H)
+                dest = Rectangle(_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_W, _L2_DOOR_H)
                 draw_texture_pro(self.res.end_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
             # Directional pointer signs guiding toward the door
@@ -471,11 +463,11 @@ class WinScreen:
 class ScreenManager:
     def __init__(self, res):
         self.screens = {
-            "MENU":      MenuScreen(self, res),
-            "PLAYING":   GameplayScreen(self, res),
-            "PAUSED":    PauseScreen(self, res),
+            "MENU": MenuScreen(self, res),
+            "PLAYING": GameplayScreen(self, res),
+            "PAUSED": PauseScreen(self, res),
             "GAME_OVER": GameOverScreen(self, res),
-            "WIN":       WinScreen(self, res),
+            "WIN": WinScreen(self, res),
         }
         self.current = "MENU"
 
