@@ -186,3 +186,16 @@ UI/Mechanics: added a texture for player's starting point and a key texture for 
 
 Next/To Do:
 * Change game over logic: Game is over when the player finishes all the collectibles and made it to the finish line.
+
+### Date: 2026/04/26 3:00 PM
+
+**Goal**
+> work on code design, dividing long functions into helpers.
+
+**Implementation**
+
+*Techinal Plan/Credit*:
+*Content Credit*:
+
+**Commit message**
+> Code Design: 

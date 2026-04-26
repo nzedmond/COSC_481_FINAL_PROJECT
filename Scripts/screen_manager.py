@@ -41,14 +41,16 @@ class Resources:
         self.coin_sheet   = load_texture(b"Assets/inside_church/Items/Fruits/Apple.png")
         self.start_tex    = load_texture(b"Assets/inside_church/Items/Checkpoints/Start/Start (Moving) (64x64).png")
         self.key_tex      = load_texture(b"Assets/outside_church/4 Animated objects/Key.png")
-        # Level 2 — door and directional pointer signs
+        # Level 2 — background, door, and directional pointer signs
+        self.church_bg    = load_texture(b"Assets/inside_church/churchbg.jpg")
         self.end_tex      = load_texture(b"Assets/inside_church/Items/Checkpoints/End/End (Pressed) (64x64).png")
         self.ptr_right    = load_texture(b"Assets/outside_church/3 Objects/Pointers/1.png")
         self.ptr_up       = load_texture(b"Assets/outside_church/3 Objects/Pointers/7.png")
 
     def unload(self):
         for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "church_tiles",
-                     "coin_sheet", "start_tex", "key_tex", "end_tex", "ptr_right", "ptr_up"):
+                     "coin_sheet", "start_tex", "key_tex",
+                     "church_bg", "end_tex", "ptr_right", "ptr_up"):
             unload_texture(getattr(self, attr))
 
 
@@ -63,9 +65,14 @@ def _draw_backgrounds(res, cam_x):
     draw_parallax_layer(res.grass_bg2, cam_x, 0.50, SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
-def _draw_church_background():
-    """Solid dark-stone background for the church/dungeon level."""
-    draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(18, 14, 28, 255))
+def _draw_church_background(res):
+    """Draw the church interior background image, scaled to fill the screen."""
+    if res.church_bg.id > 0:
+        src  = Rectangle(0, 0, res.church_bg.width, res.church_bg.height)
+        dest = Rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
+        draw_texture_pro(res.church_bg, src, dest, Vector2(0, 0), 0.0, WHITE)
+    else:
+        draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(18, 14, 28, 255))
 
 
 # ---------------------------------------------------------------------------
@@ -260,7 +267,7 @@ class GameplayScreen:
         """Draw the gameplay scene (no begin/end_drawing).
         Used by both this screen and PauseScreen as a background."""
         if self.level_num == 2:
-            _draw_church_background()
+            _draw_church_background(self.res)
         else:
             _draw_backgrounds(self.res, self.camera.target.x)
 
