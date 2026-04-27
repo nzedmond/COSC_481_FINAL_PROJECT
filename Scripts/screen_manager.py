@@ -16,6 +16,13 @@ _L2_DOOR_Y = _L2_DOOR_ROW * TILE_SIZE   #   40 px  (just below solid ceiling)
 _L2_DOOR_W = 66                               # door.png width
 _L2_DOOR_H = 96                               # door.png height
 
+# Level 1 key — sits on the high platform at the very top-right (row 3, cols 45-48)
+_L1_KEY_COL = 46
+_L1_KEY_ROW = 2
+_L1_KEY_X = _L1_KEY_COL * TILE_SIZE         # 1840 px
+_L1_KEY_Y = _L1_KEY_ROW * TILE_SIZE         #   80 px
+_L1_KEY_SIZE = TILE_SIZE                     # display as one tile (40×40)
+
 # Pointer signs: (world_x, world_y, direction)
 # 'right' → ptr_right texture;  'up' → ptr_up texture
 _L2_POINTERS = [
@@ -107,7 +114,7 @@ class MenuScreen:
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 110))
 
         title = b"Crossing Kabgayi"
-        sub   = b"The Broken Sanctuary"
+        sub = b"The Broken Sanctuary"
         title_y = SCREEN_HEIGHT // 3 - 20
         draw_text(title, SCREEN_WIDTH // 2 - measure_text(title, 52) // 2,
                   title_y, 52, WHITE)
@@ -152,6 +159,7 @@ class GameplayScreen:
 
         self.score = 0
         self.all_collected = False
+        self.key_collected = False
         self.coin_frame = 0
         self.anim_timer = 0.0
         self.start_frame = 0
@@ -236,9 +244,12 @@ class GameplayScreen:
 
         # Win conditions differ per level
         if self.level_num == 1:
-            if self.all_collected and self.player.x + self.player.width >= DEST_COL * TILE_SIZE:
-                self.manager.switch_to("PLAYING", level_num=2, carry_health=self.player.health)
-                return
+            if not self.key_collected:
+                key_rect = (_L1_KEY_X, _L1_KEY_Y, _L1_KEY_SIZE, _L1_KEY_SIZE)
+                if check_collision_recs(player_rect, key_rect):
+                    self.key_collected = True
+                    self.manager.switch_to("PLAYING", level_num=2, carry_health=self.player.health)
+                    return
         else:
             # Level 2: reach the End door in the top-right corner (no apple requirement)
             door_rect = (_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_W, _L2_DOOR_H)
@@ -265,7 +276,7 @@ class GameplayScreen:
 
         begin_mode_2d(self.camera)
 
-        tile_tex     = self.res.church_tiles if self.level_num == 2 else self.res.tiles
+        tile_tex = self.res.church_tiles if self.level_num == 2 else self.res.tiles
         tile_variant = 'church' if self.level_num == 2 else 'cemetery'
         draw_level(self.game_level, tile_tex, variant=tile_variant)
 
@@ -280,9 +291,9 @@ class GameplayScreen:
             bullet.draw()
         self.player.draw()
 
-        if self.level_num == 1 and self.res.key_tex.id > 0:
-            src  = Rectangle(DEST_COL * TILE_SIZE, 10 * TILE_SIZE, 120, 120)
-            dest = Rectangle(DEST_COL * 2 - 16, TILE_SIZE * 15, 120, 120)
+        if self.level_num == 1 and not self.key_collected and self.res.key_tex.id > 0:
+            src  = Rectangle(0, 0, self.res.key_tex.width, self.res.key_tex.height)
+            dest = Rectangle(_L1_KEY_X, _L1_KEY_Y, _L1_KEY_SIZE, _L1_KEY_SIZE)
             draw_texture_pro(self.res.key_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
         if self.level_num == 2:
@@ -353,9 +364,9 @@ class PauseScreen:
         self.manager.screens["PLAYING"].draw_world()
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 160))
 
-        title  = b"PAUSED"
+        title = b"PAUSED"
         resume = b"P  -  Resume"
-        menu   = b"M  -  Quit to Menu"
+        menu = b"M  -  Quit to Menu"
         draw_text(title,
                   SCREEN_WIDTH // 2 - measure_text(title, 52) // 2,
                   SCREEN_HEIGHT // 2 - 80, 52, WHITE)
@@ -373,13 +384,13 @@ class PauseScreen:
 class GameOverScreen:
     def __init__(self, manager, res):
         self.manager = manager
-        self.res     = res
-        self.score   = 0
-        self.bg_x    = 0.0
+        self.res = res
+        self.score = 0
+        self.bg_x = 0.0
 
     def on_enter(self, score=0, **kwargs):
         self.score = score
-        self.bg_x  = self.manager.screens["PLAYING"].camera.target.x
+        self.bg_x = self.manager.screens["PLAYING"].camera.target.x
 
     def update(self, dt):
         self.bg_x += 30 * dt
@@ -394,10 +405,10 @@ class GameOverScreen:
         _draw_backgrounds(self.res, self.bg_x)
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 150))
 
-        title      = b"GAME OVER"
+        title = b"GAME OVER"
         score_text = f"Score: {self.score}".encode()
-        restart    = b"R  -  Play Again"
-        menu       = b"M  -  Main Menu"
+        restart = b"R  -  Play Again"
+        menu = b"M  -  Main Menu"
         draw_text(title,
                   SCREEN_WIDTH // 2 - measure_text(title, 60) // 2,
                   SCREEN_HEIGHT // 3 - 20, 60, RED)
@@ -418,13 +429,13 @@ class GameOverScreen:
 class WinScreen:
     def __init__(self, manager, res):
         self.manager = manager
-        self.res     = res
-        self.score   = 0
-        self.bg_x    = 0.0
+        self.res = res
+        self.score = 0
+        self.bg_x = 0.0
 
     def on_enter(self, score=0, **kwargs):
         self.score = score
-        self.bg_x  = self.manager.screens["PLAYING"].camera.target.x
+        self.bg_x = self.manager.screens["PLAYING"].camera.target.x
 
     def update(self, dt):
         self.bg_x += 30 * dt
@@ -439,10 +450,10 @@ class WinScreen:
         _draw_backgrounds(self.res, self.bg_x)
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 120))
 
-        title      = b"YOU MADE IT! THE CHURCH IS SAFE."
+        title = b"YOU MADE IT! THE CHURCH IS SAFE."
         score_text = f"Apples Collected: {self.score}".encode()
-        restart    = b"R  -  Play Again"
-        menu       = b"M  -  Return Home"
+        restart = b"R  -  Play Again"
+        menu = b"M  -  Return Home"
         draw_text(title,
                   SCREEN_WIDTH // 2 - measure_text(title, 22) // 2,
                   SCREEN_HEIGHT // 3 - 20, 22, GREEN)
