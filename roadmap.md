@@ -199,3 +199,30 @@ Next/To Do:
 
 **Commit message**
 > Code Design: 
+
+
+### Date: 2026/04/26 9:00 PM
+
+**Goal**
+> add key and door sprites to levels one and two, respectively
+
+**Implementation**
+
+*Techinal Plan/Credit*:
+*Content Credit*:
+
+**Commit message**
+> UI/Mechanics: 
+
+### Date: 2026/04/27 8:37 PM
+
+**Goal**
+> Replace tiles in level one with more clear/visible ones
+
+**Implementation**
+
+*Techinal Plan/Credit*:
+*Content Credit*:
+
+**Commit message**
+> UI: Replaced tiles in level one with more clear/visible ones

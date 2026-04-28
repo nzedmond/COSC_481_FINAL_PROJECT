@@ -112,10 +112,10 @@ def activate_level(n: int) -> None:
     """Switch the module-level globals to level n (1 or 2)."""
     global LEVEL, TILE_ROWS, TILE_COLS, WORLD_WIDTH, WORLD_HEIGHT
     data = LEVEL_1 if n == 1 else LEVEL_2
-    LEVEL        = data
-    TILE_ROWS    = len(data)
-    TILE_COLS    = len(data[0])
-    WORLD_WIDTH  = TILE_COLS * TILE_SIZE
+    LEVEL = data
+    TILE_ROWS = len(data)
+    TILE_COLS = len(data[0])
+    WORLD_WIDTH = TILE_COLS * TILE_SIZE
     WORLD_HEIGHT = TILE_ROWS * TILE_SIZE
 
 

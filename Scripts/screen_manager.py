@@ -9,23 +9,23 @@ from enemy import Bullet
 # ---------------------------------------------------------------------------
 # Level 2 door — top-right corner, sitting on the row-2 platform (cols 41-44)
 # ---------------------------------------------------------------------------
-_L2_DOOR_COL = 42
-_L2_DOOR_ROW = 1
-_L2_DOOR_X = _L2_DOOR_COL * TILE_SIZE + 220   # 1680 px
-_L2_DOOR_Y = _L2_DOOR_ROW * TILE_SIZE   #   40 px  (just below solid ceiling)
-_L2_DOOR_W = 66                               # door.png width
-_L2_DOOR_H = 96                               # door.png height
+L2_DOOR_COL = 42
+L2_DOOR_ROW = 1
+L2_DOOR_X = L2_DOOR_COL * TILE_SIZE + 220   # 1680 px
+L2_DOOR_Y = L2_DOOR_ROW * TILE_SIZE   #   40 px  (just below solid ceiling)
+L2_DOOR_W = 66                               # door.png width
+L2_DOOR_H = 96                               # door.png height
 
 # Level 1 key — sits on the high platform at the very top-right (row 3, cols 45-48)
-_L1_KEY_COL = 46
-_L1_KEY_ROW = 2
-_L1_KEY_X = _L1_KEY_COL * TILE_SIZE         # 1840 px
-_L1_KEY_Y = _L1_KEY_ROW * TILE_SIZE         #   80 px
-_L1_KEY_SIZE = TILE_SIZE                     # display as one tile (40×40)
+L1_KEY_COL = 46
+L1_KEY_ROW = 2
+L1_KEY_X = L1_KEY_COL * TILE_SIZE         # 1840 px
+L1_KEY_Y = L1_KEY_ROW * TILE_SIZE         #   80 px
+L1_KEY_SIZE = TILE_SIZE                     # display as one tile (40×40)
 
 # Pointer signs: (world_x, world_y, direction)
 # 'right' → ptr_right texture;  'up' → ptr_up texture
-_L2_POINTERS = [
+L2_POINTERS = [
     (3  * TILE_SIZE, 17 * TILE_SIZE, 'right'),   # spawn area — go right
     (13 * TILE_SIZE, 15 * TILE_SIZE, 'right'),   # low platform — keep right
     (25 * TILE_SIZE, 10 * TILE_SIZE, 'up'),      # mid section  — go up
@@ -245,14 +245,14 @@ class GameplayScreen:
         # Win conditions differ per level
         if self.level_num == 1:
             if not self.key_collected:
-                key_rect = (_L1_KEY_X, _L1_KEY_Y, _L1_KEY_SIZE, _L1_KEY_SIZE)
+                key_rect = (L1_KEY_X, L1_KEY_Y, L1_KEY_SIZE, L1_KEY_SIZE)
                 if check_collision_recs(player_rect, key_rect):
                     self.key_collected = True
                     self.manager.switch_to("PLAYING", level_num=2, carry_health=self.player.health)
                     return
         else:
             # Level 2: reach the End door in the top-right corner (no apple requirement)
-            door_rect = (_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_W, _L2_DOOR_H)
+            door_rect = (L2_DOOR_X, L2_DOOR_Y, L2_DOOR_W, L2_DOOR_H)
             if check_collision_recs(player_rect, door_rect):
                 self.manager.switch_to("WIN", score=self.score)
                 return
@@ -276,8 +276,10 @@ class GameplayScreen:
 
         begin_mode_2d(self.camera)
 
-        tile_tex = self.res.church_tiles if self.level_num == 2 else self.res.tiles
-        tile_variant = 'church' if self.level_num == 2 else 'cemetery'
+        if self.level_num == 2:
+            tile_tex, tile_variant = self.res.church_tiles, 'church'
+        else:
+            tile_tex, tile_variant = self.res.church_tiles, 'level1'
         draw_level(self.game_level, tile_tex, variant=tile_variant)
 
         # Start marker at player spawn
@@ -293,18 +295,18 @@ class GameplayScreen:
 
         if self.level_num == 1 and not self.key_collected and self.res.key_tex.id > 0:
             src  = Rectangle(0, 0, self.res.key_tex.width, self.res.key_tex.height)
-            dest = Rectangle(_L1_KEY_X, _L1_KEY_Y, _L1_KEY_SIZE, _L1_KEY_SIZE)
+            dest = Rectangle(L1_KEY_X, L1_KEY_Y, L1_KEY_SIZE, L1_KEY_SIZE)
             draw_texture_pro(self.res.key_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
         if self.level_num == 2:
             # Door in top-right corner
             if self.res.end_tex.id > 0:
-                src  = Rectangle(0, 0, _L2_DOOR_W, _L2_DOOR_H)
-                dest = Rectangle(_L2_DOOR_X, _L2_DOOR_Y, _L2_DOOR_W, _L2_DOOR_H)
+                src  = Rectangle(0, 0, L2_DOOR_W, L2_DOOR_H)
+                dest = Rectangle(L2_DOOR_X, L2_DOOR_Y, L2_DOOR_W, L2_DOOR_H)
                 draw_texture_pro(self.res.end_tex, src, dest, Vector2(0, 0), 0.0, WHITE)
 
             # Directional pointer signs guiding toward the door
-            for (wx, wy, direction) in _L2_POINTERS:
+            for (wx, wy, direction) in L2_POINTERS:
                 tex = self.res.ptr_right if direction == 'right' else self.res.ptr_up
                 if tex.id > 0:
                     src  = Rectangle(0, 0, tex.width, tex.height)

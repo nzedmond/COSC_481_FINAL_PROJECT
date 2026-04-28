@@ -39,6 +39,9 @@ def draw_level(level, terrain_texture=None, variant='cemetery'):
     if variant == 'church':
         surface_src = (CHURCH_SURFACE_X, CHURCH_SURFACE_Y, CHURCH_SURFACE_W, CHURCH_SURFACE_H)
         fill_src    = (CHURCH_FILL_X,    CHURCH_FILL_Y,    CHURCH_FILL_W,    CHURCH_FILL_H)
+    elif variant == 'level1':
+        surface_src = (L1_SURFACE_X, L1_SURFACE_Y, L1_SURFACE_W, L1_SURFACE_H)
+        fill_src    = (L1_FILL_X,    L1_FILL_Y,    L1_FILL_W,    L1_FILL_H)
     else:
         surface_src = (CEMETERY_SURFACE_X, CEMETERY_SURFACE_Y, CEMETERY_SURFACE_W, CEMETERY_SURFACE_H)
         fill_src    = (CEMETERY_FILL_X,    CEMETERY_FILL_Y,    CEMETERY_FILL_W,    CEMETERY_FILL_H)
