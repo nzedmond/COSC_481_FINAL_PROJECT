@@ -66,8 +66,8 @@ class Resources:
 # ---------------------------------------------------------------------------
 
 def _draw_backgrounds(res, cam_x):
-    draw_parallax_layer(res.bg0,       cam_x, 0.05, SCREEN_WIDTH, SCREEN_HEIGHT)
-    draw_parallax_layer(res.bg1,       cam_x, 0.15, SCREEN_WIDTH, SCREEN_HEIGHT)
+    draw_parallax_layer(res.bg0, cam_x, 0.05, SCREEN_WIDTH, SCREEN_HEIGHT)
+    draw_parallax_layer(res.bg1, cam_x, 0.15, SCREEN_WIDTH, SCREEN_HEIGHT)
     draw_parallax_layer(res.grass_bg1, cam_x, 0.30, SCREEN_WIDTH, SCREEN_HEIGHT)
     draw_parallax_layer(res.grass_bg2, cam_x, 0.50, SCREEN_WIDTH, SCREEN_HEIGHT)
 

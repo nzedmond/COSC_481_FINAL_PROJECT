@@ -16,7 +16,7 @@
 ---
 
 **References:**
-[Uimana Odile's Testimony](http://genocide.lib.usf.edu/node/1400)
+[Uwimana Odile's Testimony](http://genocide.lib.usf.edu/node/1400)
 
 ---
 
@@ -34,7 +34,7 @@ Crossing Kabgayi
 
 ## Game Summary
 
-Crossing Kabgayi is a 2D narrative platformer game set during the 1994 genocide against the Tutsi in Rwanda. The player guides a young girl, Odile Umana, as she escapes the violence surrounding the Kabgayi Catholic Church and attempts to reach a safe zone protected by the Rwanda Patriotic Front (RPF).
+Crossing Kabgayi is a 2D narrative platformer game set during the 1994 genocide against the Tutsi in Rwanda. The player guides a young girl, Odile Uwimana, as she escapes the violence surrounding the Kabgayi Catholic Church and attempts to reach a safe zone protected by the Rwanda Patriotic Front (RPF).
 
 Through 2 levels, players navigate fear, chaos, and uncertainty as they avoid militias while witnessing the destruction of communities and making their way toward survival. The game focuses on lived experiences, emphasizing vulnerability, resilience, and hope.
 
@@ -46,7 +46,7 @@ The objective is not simply to reach the safe place, but to experience the emoti
 
 - Survival accounts from the 1994 Genocide against the Tutsi.
 - The testimonials of Odile Uwimana at Kabgayi Church.
-- Historical role of the RDF in stopping the genocide and restoring hope in Rwandans.
+- Historical role of the RPF in stopping the genocide and restoring hope in Rwandans.
 - Games:
   - **This War of Mine:** Read about it on Wikipedia and watched trailers on YouTube (civilian survival)
   ![This War of Mine](../Assets/inspiration/this%20war%20of%20mine.jpg)
@@ -61,82 +61,70 @@ The objective is not simply to reach the safe place, but to experience the emoti
 
 ### Core Mechanics
 
-- 2D platformer with camera (different camera types in level 1 and 2): Level one is played inside the church, so the camera type is vertical, while for level 2, which is outside of the church, the camera type is horizontal.
-- Stealth (jump over blocks, avoid detection, move carefully)
-- Puzzles (choosing the fastest and safest path, timing your movements)
-- Narrative triggers (AV cues that tell the story)
+- 2D side-scrolling platformer with a scrolling Camera2D that follows the player
+- Level 1 is played outdoors (the cemetery grounds around Kabgayi) with a horizontal camera and parallax background layers
+- Level 2 is played inside the church with a fixed interior background and vertical platform layout
+- Evasion (jump over obstacles, duck behind solid tiles to avoid bullets)
+- Puzzles (choosing the fastest and safest path, timing movements around enemy fire)
+- Narrative triggers (visual and environmental cues that tell the story)
 
 ### Level Structure
 
-#### Level 1: The Broken Sanctuary
-![inside the church](../Assets/cemetery/Background_1.png)
+#### Level 1: The Cemetery Grounds
+![cemetery background](../Assets/cemetery/Background_1.png)
 
-- Inside the Kabgayi church
-- The goal is to exit the church
-- Sounds and visuals imply violence without explicitly showing it
+- Odile navigates the open cemetery grounds surrounding the Kabgayi church
+- The goal is to find the **key** hidden on the highest platform in the top-right corner and collect it to proceed inside
+- Apple collectibles are scattered across the platforms — gathering them builds score and represents small acts of survival
+- A single enemy shooter fires bullets toward the player every 2 seconds; solid tiles provide cover
+- The 4-layer parallax background creates a sense of depth and urgency as the player moves right
 
 ##### Level 1 Mechanics
-- Player states:
-  - **Single and double jump**
-  - **Fall**
-  - **Hit**
-  - **Run**
-  - **Wall jump**
+- Player states: **Idle**, **Run**, **Jump**, **Double Jump**, **Fall**, **Hit**
 
 <img src="../Assets/inside_church/Level_1.jpg" alt="level_1 sketch" width="400"/>
 
-<!-- ![level_1 sketch](../Assets/inside_church/Level_1.jpg) -->
 **Movement**
-- Single and double jump
-- Wall jump (for navigating the church's vertical interior)
-- Run and fall states
+- Horizontal side-scrolling across a 16-row × 50-column tile grid
+- Single and double jump to reach elevated platforms
+- Run and fall states with gravity
 
-**Stealth**
-- Detection zones — militia/threat areas that trigger a "hit" state if entered
-- Crouching or slow movement to avoid detection
-- The Hit state implies a consequence system (damage, restart checkpoint)
+**Survival**
+- Bullets aimed at the player's current position — anticipate and move
+- Hide underneath solid tiles to block incoming fire
+- Health carries over into Level 2 — taking damage here has lasting consequences
 
-**Puzzles**
-- Vertical path choices — multiple routes up/through the church
-- Timed movements (e.g. wait for a patrol to pass before jumping)
-- Obstacles to jump over rather than engage
+**Win Condition**
+- Reach the key on the top-right platform to unlock the church and advance to Level 2
 
-**Narrative Triggers**
-- Audio cues (screams, gunshots off-screen) tied to position
-- Visual cues (smoke, broken pews, bodies implied not shown) as the player climbs
-- A trigger at the exit that transitions to Level 2
-
-#### Level 2: The Escape
+#### Level 2: The Church Interior
 ![En route to the safe zone](../Assets/cemetery/Social/moon.png)
-- Roads and countryside between Kabgayi and the safe zone
-- Cross dangerous open areas
-- The goal is to reach the safe zone
-- Enemies shoot at you and you've to stay alive
+- Odile has entered the Kabgayi church, now a dangerous and chaotic space
+- The goal is to navigate the interior platforms and reach the **door** in the top-right corner to escape
+- Two enemy shooters fire from different positions, creating crossfire across the level
+- Directional pointer signs guide the player toward the exit
 
 ##### Level 2 Mechanics
-- Player states:
-  - **Idle**
-  - **Walk**
-  - **Run**
-  - **Single jump**
+- Player states: **Idle**, **Run**, **Jump**, **Double Jump**, **Fall**, **Hit**
 
 **Movement**
-- Walk, run, single and double jumps
-- Idle state (hiding/pausing behind cover)
+- Vertical platform layout inside a 20-row × 50-column enclosed dungeon
+- Solid ceiling, floor, and side walls contain the player within the church space
+- Single and double jumps to navigate staggered platforms
 
 **Enemy Mechanics**
-- Enemies that shoot projectiles toward the player: 
-  - The projectiles can reach anywhere on the play screen except under the tiles where the player can hide. 
+- Two shooters fire projectiles aimed at the player's position
+  - Shooter 1 fires every 2.5 seconds; Shooter 2 fires every 3.5 seconds with a staggered start
+  - Projectiles travel anywhere on screen except beneath solid tiles
 - No combat — Odile cannot fight back, only evade
-- Cover system: objects to hide behind to avoid gunfire
+- Hide underneath platforms to block incoming fire
 
-**Stealth / Survival**
-- Line-of-sight detection by enemies
-- Safe zones or shadows to pass through undetected
+**Survival**
+- Health carries over from Level 1 — arriving injured means less margin for error
+- Each bullet hit deals 10 HP; health reaching 0 ends the game
 
-**Narrative Triggers**
-- Environmental storytelling along the road (destroyed homes, abandoned items)
-- A final trigger reaching the RPF safe zone to end the game
+**Win Condition**
+- Reach the door at the top-right corner of the church to escape and complete the game
 
 ---
 
