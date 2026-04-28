@@ -105,6 +105,9 @@ The objective is not simply to reach the safe place, but to experience the emoti
 - Directional pointer signs guide the player toward the exit
 
 ##### Level 2 Mechanics
+<img src="../Assets/inside_church/level2.png" alt="level_1 sketch" width="400"/>
+
+
 - Player states: **Idle**, **Run**, **Jump**, **Double Jump**, **Fall**, **Hit**
 
 **Movement**
