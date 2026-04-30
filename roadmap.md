@@ -226,3 +226,22 @@ Next/To Do:
 
 **Commit message**
 > UI: Replaced tiles in level one with more clear/visible ones
+
+### Date: 2026/04/30 11:00 AM
+
+**Goal**
+> Organize the repository
+
+**Implementation**
+
+*Techinal Plan/Credit*:
+*Content Credit*:
+
+**Commit message**
+> structure: organized the game repository
+
+Next/To Do:
+  - Add fire to some of the tiles inside the church(level 2)
+  - modify the win text
+  - find wooden tiles to replace the concrete ones I currently have
+  - Find music
