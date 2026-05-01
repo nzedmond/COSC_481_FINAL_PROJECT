@@ -49,7 +49,7 @@ class Resources:
         self.start_tex = load_texture(b"Assets/inside_church/Items/Checkpoints/Start/Start (Moving) (64x64).png")
         self.key_tex = load_texture(b"Assets/key.png")
         # Level 2 — background, door, and directional pointer signs
-        self.church_bg = load_texture(b"Assets/inside_church/churchbg.jpg")
+        self.church_bg = load_texture(b"pictures/churchbg2.png")
         self.end_tex = load_texture(b"Assets/door.png")
         self.ptr_right = load_texture(b"Assets/outside_church/3 Objects/Pointers/1.png")
         self.ptr_up = load_texture(b"Assets/outside_church/3 Objects/Pointers/7.png")
@@ -407,7 +407,7 @@ class GameOverScreen:
         _draw_backgrounds(self.res, self.bg_x)
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 150))
 
-        title = b"GAME OVER"
+        title = b"STAY SAFE NEXT TIME!"
         score_text = f"Score: {self.score}".encode()
         restart = b"R  -  Play Again"
         menu = b"M  -  Main Menu"
@@ -452,8 +452,8 @@ class WinScreen:
         _draw_backgrounds(self.res, self.bg_x)
         draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, Color(0, 0, 0, 120))
 
-        title = b"YOU MADE IT! THE CHURCH IS SAFE."
-        score_text = f"Apples Collected: {self.score}".encode()
+        title = b"YOU MADE IT! NOW YOU'RE SAFE."
+        score_text = f"YOU COLLECTED {self.score} FRUITS".encode()
         restart = b"R  -  Play Again"
         menu = b"M  -  Return Home"
         draw_text(title,

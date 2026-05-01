@@ -64,7 +64,6 @@ The objective is not simply to reach the safe place, but to experience the emoti
 - Level 2 is played inside the church with a fixed interior background and vertical platform layout
 - Evasion (jump over obstacles, duck behind solid tiles to avoid bullets)
 - Puzzles (choosing the fastest and safest path, timing movements around enemy fire)
-- Narrative triggers (visual and environmental cues that tell the story)
 
 ### Level Structure
 
@@ -139,3 +138,31 @@ The objective is not simply to reach the safe place, but to experience the emoti
 ## Theme Interpretation
 
 This game is not about defeating enemies, but rather escaping and staying alive. Kabgayi church symbolizes how even places of refuge can become dangerous during conflicts. By playing as Odile, the audience experiences events through a vulnerable perspective. The presence of the RDF represents the possibility of safety and intervention. After playing the game, players should understand that the 1994 genocide against the Tutsi affected real people in deeply personal ways. They might feel empathy for survivors and recognize the importance of remembering history.
+
+---
+## Artistic Section
+> Some of the images used in the game were generated or enhance using AI, specifically Gemini. The image used for the Kabgayi church interior was made by combining the following three images and prompt:
+  - Prompt: I want to create an 800 x 600 image to use as a background for my 2d platform game. Using the above three images as a reference, create an image that depicts the horrors of the 1994 genocide against the tutsi in Rwanda. The image should include elements like clothes, skulls, and anything that symbolizes violence and terror.
+
+<table>
+  <tr>
+    <td><img src="../pictures/kabgayi3.jpg" width="200"></td>
+    <td><img src="../pictures/kabgayi4.jpg" width="200"></td>
+    <td><img src="../pictures/kabgayi1.png" width="200"></td>
+    <td><img src="../pictures/kabgayi2.png" width="200"></td>
+  </tr>
+</table>
+
+And that resulted into the following background image for the second level of my game:
+
+<img src="../pictures/churchbg2.png" alt="level_1 sketch" width="800"/>
+
+## CREDITS
+
+  - `Double Jump Mechanic`: 
+  - `Parallax effect`: 
+  - `Music`: 
+  - `Images`: [sample images](https://natarajasfoot.blogspot.com/2015/08/nyamata.html)
+  - `Sprite sheets`: [Pixel Frog](https://pixelfrog-assets.itch.io/)
+
+
