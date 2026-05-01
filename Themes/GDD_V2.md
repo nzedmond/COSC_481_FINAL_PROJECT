@@ -3,6 +3,9 @@
   ## 
     Author: Edmond Nzivugira
   ## Game Title: CROSSING KABGAYI
+  <img src="../screenshots/start.png" alt="Start page of the game" width="600">
+
+  A video demosntrating a game demo can be found here: [Game Demo](https://drive.google.com/file/d/1r9jy5gCTiBmL9YC36nWy_Dh3Fsed86Gv/view?usp=sharing)
 
 ## Table of Contents
 
@@ -140,7 +143,12 @@ The objective is not simply to reach the safe place, but to experience the emoti
 This game is not about defeating enemies, but rather escaping and staying alive. Kabgayi church symbolizes how even places of refuge can become dangerous during conflicts. By playing as Odile, the audience experiences events through a vulnerable perspective. The presence of the RDF represents the possibility of safety and intervention. After playing the game, players should understand that the 1994 genocide against the Tutsi affected real people in deeply personal ways. They might feel empathy for survivors and recognize the importance of remembering history.
 
 ---
-## 
+## 2 Key Mechanincs
+ > **Double Jump**
+  Pressing the space bar or double pressing on the UP arrow arrows the character sprite to double jump. This is useful especially when the player wants to reach hire platforms. This mechanic is implemented by setting the minimum jump count to 0 and the maximum to 2. The jump logic reads keyboard inputs and the moment an UP arrow or a space bar is read, the jump_count is incremented by one, as long as it is less than 2. It's possible for the character to do more double jumps on the top of the previous double dumps, which might make you feel like it's a quadruple jump, but it's not. Let's say a player does a double jump but then realizes that the character didn't reach where they wanted them to be. While the character is still midair, the player then decides to do another double jump before the character transition into the `falling` phase. This will allow the character to do two more jumps (a double-jump) by reseting the jump count to zero.
+
+ > **Parallax Effect**
+  The parallax effect is one of the best GUI design choices that I've seen implemented in 2d platformer games. Given tqo or more layers, it's possible to animate them to have a background that moves with the player. Let's suppose we have 3 layers that we want to use to design our background look. To make them move in parallax, we give them different `scroll_factors`. Let's suppose we give `layer A` a scroll_factor of `0.5`,  `layer B` a scroll_factor of `0.75`, and to `layer C` a scroll_factor of `1.2`. Each layer moves at scroll_factor * camera_x so farther layers (small factor) scroll slower than closer ones (large factor), creating depth.
 
 
 ## Artistic Section
@@ -160,12 +168,15 @@ And that resulted into the following background image for the second level of my
 
 <img src="../pictures/churchbg2.png" alt="level_1 sketch" width="800"/>
 
+> The music used was downloaded from Artlist.com, but I also used Davinci Resolve Fairlight editing software to enhance and mix the audio with sound effects to match the theme and dwhat was going on in the game. 
+
 ## CREDITS
 
-  - `Double Jump Mechanic`: 
-  - `Parallax effect`: 
-  - `Music`: 
+  - `Double Jump Mechanic`: [Double Jump](https://gamemaker.io/en/tutorials/platformer-double-jump)
+  - `Parallax effect`: Class code - teh second in-class mini-hackathon
+  - `Music and SFX`: [Artlist](https://artlist.io/) 
   - `Images`: [sample images](https://natarajasfoot.blogspot.com/2015/08/nyamata.html)
   - `Sprite sheets`: [Pixel Frog](https://pixelfrog-assets.itch.io/)
+  - `COSC481 Playful Thinking, Serious Coding at Colgate University`
 
 
