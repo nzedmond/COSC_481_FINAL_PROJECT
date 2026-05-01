@@ -126,7 +126,7 @@ class MenuScreen:
             draw_text(prompt, SCREEN_WIDTH // 2 - measure_text(prompt, 26) // 2,
                       SCREEN_HEIGHT * 2 // 3, 26, WHITE)
 
-        hint = b"Move: Arrows / WASD     Jump: SPACE     Pause: P"
+        hint = b"Move: Arrows     Jump: SPACE     Pause: P"
         draw_text(hint, SCREEN_WIDTH // 2 - measure_text(hint, 16) // 2,
                   SCREEN_HEIGHT - 36, 16, GRAY)
         end_drawing()

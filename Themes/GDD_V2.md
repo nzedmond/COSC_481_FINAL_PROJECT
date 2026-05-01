@@ -140,6 +140,9 @@ The objective is not simply to reach the safe place, but to experience the emoti
 This game is not about defeating enemies, but rather escaping and staying alive. Kabgayi church symbolizes how even places of refuge can become dangerous during conflicts. By playing as Odile, the audience experiences events through a vulnerable perspective. The presence of the RDF represents the possibility of safety and intervention. After playing the game, players should understand that the 1994 genocide against the Tutsi affected real people in deeply personal ways. They might feel empathy for survivors and recognize the importance of remembering history.
 
 ---
+## 
+
+
 ## Artistic Section
 > Some of the images used in the game were generated or enhance using AI, specifically Gemini. The image used for the Kabgayi church interior was made by combining the following three images and prompt:
   - Prompt: I want to create an 800 x 600 image to use as a background for my 2d platform game. Using the above three images as a reference, create an image that depicts the horrors of the 1994 genocide against the tutsi in Rwanda. The image should include elements like clothes, skulls, and anything that symbolizes violence and terror.
