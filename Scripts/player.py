@@ -24,10 +24,10 @@ class Player:
         self.health     = self.max_health
 
         self.sprites = {
-            "idle": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Idle (32x32).png"),
-            "run":  load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Run (32x32).png"),
-            "jump": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Jump (32x32).png"),
-            "fall": load_texture(b"Assets/inside_church/Main Characters/Ninja Frog/Fall (32x32).png"),
+            "idle": load_texture(b"Assets/inside_church/Main Characters/Pink Man/idle.png"),
+            "run":  load_texture(b"Assets/inside_church/Main Characters/Pink Man/run.png"),
+            "jump": load_texture(b"Assets/inside_church/Main Characters/Pink Man/jump.png"),
+            "fall": load_texture(b"Assets/inside_church/Main Characters/Pink Man/fall.png"),
         }
         self.frame = 0
         self.anim_timer = 0.0
