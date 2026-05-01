@@ -1,6 +1,8 @@
 # Crossing Kabgayi: The Broken Sanctuary
 COSC 481 Capstone Project: A 2D side-scrolling platformer built with Python and raylib (pyray).
 
+> NOTE: Find the GDD in the Themes folder. 
+
 ## How to Run
 ```bash
 cd Scripts
