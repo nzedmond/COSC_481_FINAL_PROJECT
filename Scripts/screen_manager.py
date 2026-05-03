@@ -54,7 +54,61 @@ class Resources:
         self.ptr_right = load_texture(b"Assets/outside_church/3 Objects/Pointers/1.png")
         self.ptr_up = load_texture(b"Assets/outside_church/3 Objects/Pointers/7.png")
 
+        # Audio
+        self.soundtrack = None
+        self.pistol_sfx = None
+        self.rifle_sfx = None
+
+        try:
+            self.soundtrack = load_music_stream(b"audio/soundtrack.mp3")
+            set_music_volume(self.soundtrack, 0.45)
+            play_music_stream(self.soundtrack)
+        except Exception:
+            self.soundtrack = None
+
+        try:
+            self.pistol_sfx = load_sound(b"audio/pistol.wav")
+            set_sound_volume(self.pistol_sfx, 0.65)
+        except Exception:
+            self.pistol_sfx = None
+
+        try:
+            self.rifle_sfx = load_sound(b"audio/rifle.wav")
+            set_sound_volume(self.rifle_sfx, 0.65)
+        except Exception:
+            self.rifle_sfx = None
+
+    def update_audio(self):
+        if self.soundtrack is not None:
+            update_music_stream(self.soundtrack)
+            # Keep music continuous across all screens and level transitions.
+            try:
+                total = get_music_time_length(self.soundtrack)
+                if total > 0.0 and get_music_time_played(self.soundtrack) >= total - 0.02:
+                    seek_music_stream(self.soundtrack, 0.0)
+                    play_music_stream(self.soundtrack)
+            except Exception:
+                pass
+
+    def play_pistol_shot(self):
+        if self.pistol_sfx is not None:
+            play_sound(self.pistol_sfx)
+
+    def play_rifle_shot(self):
+        if self.rifle_sfx is not None:
+            play_sound(self.rifle_sfx)
+
     def unload(self):
+        if self.soundtrack is not None:
+            stop_music_stream(self.soundtrack)
+            unload_music_stream(self.soundtrack)
+
+        if self.pistol_sfx is not None:
+            unload_sound(self.pistol_sfx)
+
+        if self.rifle_sfx is not None:
+            unload_sound(self.rifle_sfx)
+
         for attr in ("bg0", "bg1", "grass_bg1", "grass_bg2", "tiles", "church_tiles",
                      "coin_sheet", "start_tex", "key_tex",
                      "church_bg", "end_tex", "ptr_right", "ptr_up"):
@@ -215,6 +269,7 @@ class GameplayScreen:
             target_x = self.player.x + self.player.width  / 2
             target_y = self.player.y + self.player.height / 2
             self.bullets.append(Bullet(spawn_x, spawn_y, target_x, target_y))
+            self.res.play_pistol_shot()
 
         # Shooter 2 — bottom-left of visible screen (level 2 only)
         if self.level_num == 2:
@@ -226,6 +281,7 @@ class GameplayScreen:
                 target_x = self.player.x + self.player.width  / 2
                 target_y = self.player.y + self.player.height / 2
                 self.bullets.append(Bullet(spawn_x, spawn_y, target_x, target_y))
+                self.res.play_rifle_shot()
 
         for bullet in self.bullets:
             bullet.update(dt, self.game_level)
